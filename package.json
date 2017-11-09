@@ -1,0 +1,40 @@
+{
+  "name": "cloud-sdk-webpack",
+  "version": "0.0.1",
+  "description": "Shopgate's Webpack compiler",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopgate/cloud-sdk-webpack.git"
+  },
+  "keywords": [
+    "shopgate",
+    "cloud",
+    "sdk",
+    "webpack",
+    "compiler"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/shopgate/cloud-sdk-webpack/issues"
+  },
+  "homepage": "https://github.com/shopgate/cloud-sdk-webpack#readme",
+  "devDependencies": {
+    "@shopgate/eslint-config": "^1.0.2",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-runtime": "^6.26.0"
+  },
+  "dependencies": {
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.4"
+  }
+}
