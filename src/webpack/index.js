@@ -5,11 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/**
- * The WebpackProcess class.
- */
-class WebpackProcess {
+'use strict'
 
-}
-
-export default new WebpackProcess();
+require('./WebpackProcess').start()
