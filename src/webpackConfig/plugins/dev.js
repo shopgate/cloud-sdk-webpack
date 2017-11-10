@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const webpack = require('webpack')
-const commonPlugins = require('./common')
+import webpack from 'webpack';
+import commonPlugins from './common';
 
-module.exports = [
+export default [
   ...commonPlugins,
   new webpack.HotModuleReplacementPlugin(),
-  new webpack.NoEmitOnErrorsPlugin()
-]
+  new webpack.NoEmitOnErrorsPlugin(),
+];

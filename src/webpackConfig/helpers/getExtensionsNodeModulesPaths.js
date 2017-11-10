@@ -5,17 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const { join } = require('path')
-const AppSettings = require('../../../AppSettings')
-const themes = require('../../Themes')
+import { join } from 'path';
+import themes from '../../Themes';
 
-const extensions = AppSettings.getInstance().getExtensions()
-const path = themes.getPath()
+const extensions = process.env.settings.getExtensions();
+const path = themes.getPath();
 
 /**
  * Returns the node modules paths to all extensions.
  * @return {Array}
  */
-module.exports = () => (
+const getExtensionsNodeModulePaths = () => (
   extensions.map(name => join(path, 'extensions', name, 'frontend', 'node_modules'))
-)
+);
+
+export default getExtensionsNodeModulePaths;
