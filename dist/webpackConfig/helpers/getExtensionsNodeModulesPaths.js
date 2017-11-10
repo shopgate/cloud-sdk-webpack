@@ -1,0 +1,1 @@
+'use strict';var _require=require('path'),join=_require.join;var AppSettings=require('../../../AppSettings');var themes=require('../../Themes');var extensions=AppSettings.getInstance().getExtensions();var path=themes.getPath();module.exports=function(){return extensions.map(function(name){return join(path,'extensions',name,'frontend','node_modules')})};

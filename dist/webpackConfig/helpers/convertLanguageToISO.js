@@ -1,0 +1,1 @@
+'use strict';var languageFormat=/^('[a-z]{2}-[a-z]{2}')$/;module.exports=function(language){if(!languageFormat.test('\''+language+'\'')){return language}var elements=language.split('-');return elements[0]+'-'+elements[1].toUpperCase()};
