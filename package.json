@@ -28,7 +28,7 @@
   },
   "scripts": {
     "test": "mocha --recursive --require babel-core/register --require jsdom-global/register test",
-    "cover": "nyc mocha --recursive --require babel-core/register --require jsdom-global/register test",
+    "cover": "rimraf ./build && nyc mocha --recursive --require babel-core/register --require jsdom-global/register test",
     "build": "NODE_ENV=production babel src --out-dir dist --no-comments --minified",
     "production": "node ./bin/sgcloud-webpack"
   },
