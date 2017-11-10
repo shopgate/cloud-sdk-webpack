@@ -15,7 +15,7 @@ import themes from '../Themes';
 const THEME_PATH = themes.getPath();
 const LANG = convertLanguageToISO(process.env.settings.language);
 const NODE_MODULES = 'node_modules';
-const LOCAL_NODE_MODULES = resolve(process.env.SDK_PATH, NODE_MODULES);
+const LOCAL_NODE_MODULES = resolve(__dirname, '..', '..', NODE_MODULES);
 
 const stringReplacementLoader = StringReplacePlugin.replace({
   replacements: [{
@@ -24,7 +24,7 @@ const stringReplacementLoader = StringReplacePlugin.replace({
   }],
 });
 
-module.exports = {
+export default {
   context: resolve(THEME_PATH),
   devServer: {
     hot: true,
@@ -101,7 +101,7 @@ module.exports = {
     extensions: ['.json', '.js', '.jsx'],
     modules: [
       resolve(THEME_PATH, NODE_MODULES),
-      resolve(process.env.SDK_PATH, NODE_MODULES),
+      resolve(__dirname, NODE_MODULES),
       ...getExtensionsNodeModulesPaths(),
     ],
   },

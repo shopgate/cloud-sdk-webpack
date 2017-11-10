@@ -5,17 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const ENV_KEY_DEVELOPMENT = 'development';
-const ENV_KEY_PRODUCTION = 'production';
+export const ENV_KEY_DEVELOPMENT = 'development';
+export const ENV_KEY_PRODUCTION = 'production';
 
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = ENV_KEY_DEVELOPMENT;
 }
 
-export default {
-  ENV_KEY_DEVELOPMENT,
-  ENV_KEY_PRODUCTION,
-  ENV: process.env.NODE_ENV,
-  isDev: (process.env.NODE_ENV === ENV_KEY_DEVELOPMENT),
-  isProd: (process.env.NODE_ENV === ENV_KEY_PRODUCTION),
-};
+export const ENV = process.env.NODE_ENV;
+export const isProd = (process.env.NODE_ENV === ENV_KEY_PRODUCTION);
+export const isDev = (process.env.NODE_ENV === ENV_KEY_DEVELOPMENT);

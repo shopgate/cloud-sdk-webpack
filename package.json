@@ -29,7 +29,12 @@
   "scripts": {
     "test": "mocha --recursive --require babel-core/register --require jsdom-global/register test",
     "cover": "rimraf ./build && nyc mocha --recursive --require babel-core/register --require jsdom-global/register test",
-    "build": "NODE_ENV=production babel src --out-dir dist --no-comments --minified",
+    "pre-build": "rimraf ./dist",
+    "compile": "NODE_ENV=production babel src --out-dir dist --no-comments --minified",
+    "compile:dev": "NODE_ENV=production babel src --out-dir dist",
+    "post-build": "cp -R ./src/webpackConfig/templates ./dist/webpackConfig/",
+    "build": "npm run pre-build && npm run compile && npm run post-build",
+    "build:dev": "npm run pre-build && npm run compile:dev && npm run post-build",
     "production": "node ./bin/sgcloud-webpack"
   },
   "devDependencies": {
@@ -41,6 +46,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-runtime": "^6.26.0",
     "coveralls": "^3.0.0",
@@ -53,12 +59,21 @@
     "sinon": "^4.1.2"
   },
   "dependencies": {
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "cache-loader": "^1.1.0",
     "chalk": "^2.3.0",
     "compression-webpack-plugin": "^1.0.1",
+    "css-loader": "^0.28.7",
+    "ejs-loader": "^0.3.0",
     "html-webpack-plugin": "^2.30.1",
+    "intl": "^1.2.5",
+    "json-loader": "^0.5.7",
     "offline-plugin": "^4.8.4",
     "progress-bar-webpack-plugin": "^1.10.0",
     "string-replace-webpack-plugin": "^0.1.3",
+    "style-loader": "^0.19.0",
+    "svg-inline-loader": "^0.8.0",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4",
     "webpack-merge": "^4.1.1"
