@@ -3,15 +3,15 @@
   "version": "0.0.1",
   "description": "Shopgate's Webpack compiler",
   "main": "index.js",
-  "scripts": {
-    "test": "mocha --require babel-core/register test/**/*",
-    "cover": "nyc mocha --require babel-core/register test/**/*",
-    "build": "NODE_ENV=production babel src --out-dir dist --no-comments --minified"
-  },
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shopgate/cloud-sdk-webpack.git"
   },
+  "bugs": {
+    "url": "https://github.com/shopgate/cloud-sdk-webpack/issues"
+  },
+  "homepage": "https://github.com/shopgate/cloud-sdk-webpack",
   "keywords": [
     "shopgate",
     "cloud",
@@ -19,11 +19,15 @@
     "webpack",
     "compiler"
   ],
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/shopgate/cloud-sdk-webpack/issues"
+  "contributors": [
+    "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)",
+    "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)"
+  ],
+  "scripts": {
+    "test": "mocha --require babel-core/register test/**/*",
+    "cover": "nyc mocha --require babel-core/register test/**/*",
+    "build": "NODE_ENV=production babel src --out-dir dist --no-comments --minified"
   },
-  "homepage": "https://github.com/shopgate/cloud-sdk-webpack#readme",
   "devDependencies": {
     "@shopgate/eslint-config": "^1.0.2",
     "babel-cli": "^6.26.0",
