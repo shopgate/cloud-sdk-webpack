@@ -4,8 +4,8 @@
   "description": "Shopgate's Webpack compiler",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive --require babel-core/register test",
-    "cover": "nyc mocha --recursive --require babel-core/register test",
+    "test": "mocha --require babel-core/register test/**/*",
+    "cover": "nyc mocha --require babel-core/register test/**/*",
     "build": "NODE_ENV=production babel src --out-dir dist --no-comments --minified"
   },
   "repository": {
@@ -53,7 +53,8 @@
     ],
     "exclude": [
       "build",
-      "test"
+      "test",
+      "dist"
     ],
     "reporter": [
       "lcov",
