@@ -7,9 +7,9 @@
 
 import webpack from 'webpack';
 import rimraf from 'rimraf';
-import WebpackConfigurator from '../webpackConfig/WebpackConfigurator';
-import themes from '../Themes';
-import logger, { logHelper } from '../logger';
+import WebpackConfigurator from 'Src/webpackConfig/WebpackConfigurator';
+import themes from 'Src/Themes';
+import logger, { logHelper } from 'Src/logger';
 
 /**
  * The Webpack process class.

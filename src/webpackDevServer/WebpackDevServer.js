@@ -7,8 +7,8 @@
 
 import webpack from 'webpack';
 import WpDevServer from 'webpack-dev-server';
-import WebpackConfigurator from '../webpackConfig/WebpackConfigurator';
-import themes from '../Themes';
+import WebpackConfigurator from 'Src/webpackConfig/WebpackConfigurator';
+import themes from 'Src/Themes';
 
 /**
  * The WebpackDevServer class.
