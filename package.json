@@ -23,10 +23,14 @@
     "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)",
     "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)"
   ],
+  "bin": {
+    "sgcloud-webpack": "./bin/sgcloud-webpack"
+  },
   "scripts": {
     "test": "mocha --require babel-core/register test/**/*",
     "cover": "nyc mocha --require babel-core/register test/**/*",
-    "build": "NODE_ENV=production babel src --out-dir dist --no-comments --minified"
+    "build": "NODE_ENV=production babel src --out-dir dist --no-comments --minified",
+    "production": "node ./bin/sgcloud-webpack"
   },
   "devDependencies": {
     "@shopgate/eslint-config": "^1.0.2",

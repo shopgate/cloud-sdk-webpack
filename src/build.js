@@ -5,4 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-console.warn('HI WILL BUILD!');
+import { fork } from 'child_process';
+import { join } from 'path';
+
+try {
+  fork(join(__dirname, './webpack'));
+} catch (error) {
+  throw error;
+}

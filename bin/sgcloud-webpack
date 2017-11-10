@@ -2,4 +2,9 @@
 
 'use strict';
 
+const { ENV_KEY_PRODUCTION } = require('../dist/environment').default;
+
+// Set the environment to production.
+process.env.NODE_ENV = ENV_KEY_PRODUCTION;
+
 require('../dist/build.js');
