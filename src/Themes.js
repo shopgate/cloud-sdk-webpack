@@ -111,7 +111,7 @@ class Themes {
 
     const configFile = isProd ? 'webpack.prod.js' : 'webpack.dev.js';
 
-    return join(__dirname, `../frontend/webpackConfig/${configFile}`);
+    return join(__dirname, `./webpackConfig/${configFile}`);
   }
 }
 

@@ -9,13 +9,8 @@ import assert from 'assert';
 
 describe('convertLanguageToISO', () => {
   before(() => {
-    global.window = {};
     String.prototype.padEnd = undefined // eslint-disable-line no-extend-native
-    require('Src/app/frontend/webpackDevServer/defaultConfig/helpers/polyfill');// eslint-disable-line global-require
-  });
-
-  it('SGEvent should exist', () => {
-    assert.deepEqual(global.window.SGEvent, {});
+    require('Src/webpackConfig/helpers/polyfill'); // eslint-disable-line global-require
   });
 
   it('should pad a string correctly', () => {
