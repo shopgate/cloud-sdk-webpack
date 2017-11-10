@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const languageFormat = /^('[a-z]{2}-[a-z]{2}')$/
+const languageFormat = /^('[a-z]{2}-[a-z]{2}')$/;
 
 /**
  * Converts a lowercase language key to ISO conform lower-uppercase.
@@ -13,11 +13,13 @@ const languageFormat = /^('[a-z]{2}-[a-z]{2}')$/
  * @param {string} language The received language.
  * @return {string} The converted language.
  */
-module.exports = (language) => {
+const convertLanguageToISO = (language) => {
   if (!languageFormat.test(`'${language}'`)) {
-    return language
+    return language;
   }
 
-  const elements = language.split('-')
-  return `${elements[0]}-${elements[1].toUpperCase()}`
-}
+  const elements = language.split('-');
+  return `${elements[0]}-${elements[1].toUpperCase()}`;
+};
+
+export default convertLanguageToISO;

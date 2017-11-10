@@ -9,7 +9,10 @@
  * The WebpackConfigurator class.
  */
 class WebpackConfigurator {
-  constructor () {
+  /**
+   * WebpackConfigurator.
+   */
+  constructor() {
     /**
      * The default webpack dev server configuration.
      * @type {Object}
@@ -20,21 +23,21 @@ class WebpackConfigurator {
       port: process.env.optionsPort,
       progress: true,
       stats: {
-        colors: true
-      }
-    }
+        colors: true,
+      },
+    };
 
     /**
      * The webpack configuration.
      * @type {Object}
      */
-    this.config = {}
+    this.config = {};
 
     /**
      * The theme configuration path.
      * @type {string}
      */
-    this.configPath = null
+    this.configPath = null;
   }
 
   /**
@@ -42,19 +45,20 @@ class WebpackConfigurator {
    * @param {string} configPath The path to the webpack configuration.
    * @return {WebpackConfigurator}
    */
-  setConfigPath (configPath) {
-    this.configPath = configPath
-    return this
+  setConfigPath(configPath) {
+    this.configPath = configPath;
+    return this;
   }
 
   /**
    * Loads the theme's webpack configuration.
    */
-  loadThemeConfig () {
+  loadThemeConfig() {
     try {
-      this.config = require(this.configPath)
+      // eslint-disable-next-line global-require, import/no-dynamic-require
+      this.config = require(this.configPath);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -62,23 +66,23 @@ class WebpackConfigurator {
    * Returns the theme configuration.
    * @return {Object}
    */
-  getConfig () {
-    return this.config
+  getConfig() {
+    return this.config;
   }
 
   /**
    * Returns the webpack devserver configuration.
    * @return {Object}
    */
-  getServerConfig () {
-    const themeDevConfig = this.config.devServer || {}
+  getServerConfig() {
+    const themeDevConfig = this.config.devServer || {};
 
     // Combine all configs.
     return {
       ...this.defaultServerConfig,
-      ...themeDevConfig
-    }
+      ...themeDevConfig,
+    };
   }
 }
 
-module.exports = WebpackConfigurator
+export default WebpackConfigurator;

@@ -5,27 +5,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const { resolve } = require('path')
-const StringReplacePlugin = require('string-replace-webpack-plugin')
-const convertLanguageToISO = require('./helpers/convertLanguageToISO')
-const getExtensionsNodeModulesPaths = require('./helpers/getExtensionsNodeModulesPaths')
-const AppSettings = require('../../AppSettings')
-const { isDev } = require('../environment')
-const themes = require('../Themes')
+import { resolve } from 'path';
+import StringReplacePlugin from 'string-replace-webpack-plugin';
+import convertLanguageToISO from './helpers/convertLanguageToISO';
+import getExtensionsNodeModulesPaths from './helpers/getExtensionsNodeModulesPaths';
+import { isDev } from '../environment';
+import themes from '../Themes';
 
-const appSettings = AppSettings.getInstance().getAppSettings()
-
-const THEME_PATH = themes.getPath()
-const LANG = convertLanguageToISO(appSettings.language)
-const NODE_MODULES = 'node_modules'
-const LOCAL_NODE_MODULES = resolve(process.env.SDK_PATH, NODE_MODULES)
+const THEME_PATH = themes.getPath();
+const LANG = convertLanguageToISO(process.env.settings.language);
+const NODE_MODULES = 'node_modules';
+const LOCAL_NODE_MODULES = resolve(process.env.SDK_PATH, NODE_MODULES);
 
 const stringReplacementLoader = StringReplacePlugin.replace({
   replacements: [{
     pattern: /__PROJECT_PATH__/g,
-    replacement: () => JSON.stringify(THEME_PATH)
-  }]
-})
+    replacement: () => JSON.stringify(THEME_PATH),
+  }],
+});
 
 module.exports = {
   context: resolve(THEME_PATH),
@@ -34,7 +31,7 @@ module.exports = {
     headers: { 'Access-Control-Allow-Origin': '*' },
     publicPath: '/',
     contentBase: resolve(THEME_PATH, 'public'),
-    progress: true
+    progress: true,
   },
   entry: {
     common: [
@@ -43,13 +40,13 @@ module.exports = {
       resolve(LOCAL_NODE_MODULES, `intl/locale-data/jsonp/${LANG}.js`),
       'react',
       'react-dom',
-      resolve(__dirname, './helpers/polyfill')
-    ]
+      resolve(__dirname, './helpers/polyfill'),
+    ],
   },
   externals: {
     cheerio: 'window',
     'react/lib/ExecutionEnvironment': true,
-    'react/lib/ReactContext': true
+    'react/lib/ReactContext': true,
   },
   module: {
     rules: [
@@ -57,32 +54,32 @@ module.exports = {
         test: /\.css$/,
         use: [
           resolve(LOCAL_NODE_MODULES, 'style-loader'),
-          resolve(LOCAL_NODE_MODULES, 'css-loader')
-        ]
+          resolve(LOCAL_NODE_MODULES, 'css-loader'),
+        ],
       },
       {
         test: /\.json$/,
         use: [
-          resolve(LOCAL_NODE_MODULES, 'json-loader')
-        ]
+          resolve(LOCAL_NODE_MODULES, 'json-loader'),
+        ],
       },
       {
         test: /\.svg$/,
         use: [
-          resolve(LOCAL_NODE_MODULES, 'svg-inline-loader')
-        ]
+          resolve(LOCAL_NODE_MODULES, 'svg-inline-loader'),
+        ],
       },
       {
         test: /\.ejs/,
         use: [
-          resolve(LOCAL_NODE_MODULES, 'ejs-loader')
-        ]
+          resolve(LOCAL_NODE_MODULES, 'ejs-loader'),
+        ],
       },
       {
         test: /\.(js|jsx)$/,
         exclude: [
           resolve(process.env.SDK_PATH),
-          resolve(process.env.SDK_PATH, 'bin')
+          resolve(process.env.SDK_PATH, 'bin'),
         ],
         use: [
           stringReplacementLoader,
@@ -93,26 +90,26 @@ module.exports = {
               compact: true,
               comments: !!isDev,
               sourceRoot: THEME_PATH,
-              cacheDirectory: !isDev
-            }
-          }
-        ]
-      }
-    ]
+              cacheDirectory: !isDev,
+            },
+          },
+        ],
+      },
+    ],
   },
   resolve: {
     extensions: ['.json', '.js', '.jsx'],
     modules: [
       resolve(THEME_PATH, NODE_MODULES),
       resolve(process.env.SDK_PATH, NODE_MODULES),
-      ...getExtensionsNodeModulesPaths()
-    ]
+      ...getExtensionsNodeModulesPaths(),
+    ],
   },
   performance: {
-    hints: false
+    hints: false,
   },
   target: 'web',
   watchOptions: {
-    ignored: /node_modules\b(?!\/@shopgate)\b.*/
-  }
-}
+    ignored: /node_modules\b(?!\/@shopgate)\b.*/,
+  },
+};

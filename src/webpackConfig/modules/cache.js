@@ -5,4 +5,4 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-require('offline-plugin/runtime').install()
+require('offline-plugin/runtime').install();

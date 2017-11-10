@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const webpack = require('webpack')
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
-const OfflinePlugin = require('offline-plugin')
-const commonPlugins = require('./common')
+import webpack from 'webpack';
+import CompressionWebpackPlugin from 'compression-webpack-plugin';
+import OfflinePlugin from 'offline-plugin';
+import commonPlugins from './common';
 
-module.exports = [
+export default [
   ...commonPlugins,
   new OfflinePlugin(),
   new webpack.optimize.UglifyJsPlugin({
@@ -24,18 +24,18 @@ module.exports = [
       dead_code: true,
       evaluate: true,
       if_return: true,
-      join_vars: true
+      join_vars: true,
     },
     output: {
-      comments: false
+      comments: false,
     },
     comments: false,
-    sourceMap: true
+    sourceMap: true,
   }),
   new CompressionWebpackPlugin({
     asset: '[path].gz[query]',
     algorithm: 'gzip',
     test: /\.js$|\.css$/,
-    minRatio: 0.8
-  })
-]
+    minRatio: 0.8,
+  }),
+];

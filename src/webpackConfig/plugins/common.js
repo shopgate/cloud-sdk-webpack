@@ -5,26 +5,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const { resolve } = require('path')
-const { blue, green } = require('chalk')
-const webpack = require('webpack')
-const HTMLWebpackPlugin = require('html-webpack-plugin')
-const StringReplacePlugin = require('string-replace-webpack-plugin')
-const ProgressBarWebpackPlugin = require('progress-bar-webpack-plugin')
-const AppSettings = require('../../../AppSettings')
-const themes = require('../../Themes')
-const convertLanguageToISO = require('../helpers/convertLanguageToISO')
-const { ENV, isDev, isProd } = require('../../environment')
+import { resolve } from 'path';
+import { blue, green } from 'chalk';
+import webpack from 'webpack';
+import HTMLWebpackPlugin from 'html-webpack-plugin';
+import StringReplacePlugin from 'string-replace-webpack-plugin';
+import ProgressBarWebpackPlugin from 'progress-bar-webpack-plugin';
+import themes from '../../Themes';
+import convertLanguageToISO from '../helpers/convertLanguageToISO';
+import { ENV, isDev, isProd } from '../../environment';
 
-const appSettings = AppSettings.getInstance()
-const appConfig = appSettings.getAppSettings()
-const frontendSettings = appSettings.getFrontendSettings()
-const componentsConfig = appSettings.getComponentsSettings()
+const appSettings = process.env.settings;
+const appConfig = appSettings.getAppSettings();
+const frontendSettings = appSettings.getFrontendSettings();
+const componentsConfig = appSettings.getComponentsSettings();
 
-const THEME_PATH = themes.getPath()
-const THEME_NAME = themes.getName()
-const PUBLIC_FOLDER = 'public'
-const LANG = convertLanguageToISO(appConfig.language)
+const THEME_PATH = themes.getPath();
+const THEME_NAME = themes.getName();
+const PUBLIC_FOLDER = 'public';
+const LANG = convertLanguageToISO(appConfig.language);
 
 const plugins = [
   new StringReplacePlugin(),
@@ -34,42 +33,42 @@ const plugins = [
     template: resolve(__dirname, '../templates/index.ejs'),
     inject: false,
     cache: false,
-    minify: false
+    minify: false,
   }),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(ENV),
       APP_CONFIG: JSON.stringify({
         ...appConfig,
-        appId: appConfig.id
+        appId: appConfig.id,
       }),
       COMPONENTS_CONFIG: JSON.stringify(componentsConfig),
       LANG: JSON.stringify(LANG),
       IP: JSON.stringify(frontendSettings.getIpAddress()),
-      PORT: JSON.stringify(frontendSettings.getApiPort())
-    }
+      PORT: JSON.stringify(frontendSettings.getApiPort()),
+    },
   }),
   new webpack.LoaderOptionsPlugin({
     debug: isDev,
     options: {
       context: THEME_PATH,
       output: {
-        path: resolve(THEME_PATH, PUBLIC_FOLDER)
-      }
-    }
+        path: resolve(THEME_PATH, PUBLIC_FOLDER),
+      },
+    },
   }),
   new webpack.IgnorePlugin(),
   new webpack.optimize.ModuleConcatenationPlugin(),
   new webpack.optimize.CommonsChunkPlugin({
     minChunks: 2,
     name: 'common',
-    filename: isProd ? '[name].[chunkhash].js' : '[name].js'
+    filename: isProd ? '[name].[chunkhash].js' : '[name].js',
   }),
   new webpack.HashedModuleIdsPlugin(),
   new ProgressBarWebpackPlugin({
     format: `  building [${blue(':bar')}] [:msg] ${green(':percent')} (:elapsed seconds)`,
-    clear: false
-  })
-]
+    clear: false,
+  }),
+];
 
-module.exports = plugins
+export default plugins;
