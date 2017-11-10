@@ -1,5 +1,10 @@
 # Shopgate Cloud SDK Webpack Compiler
 
+[![Travis CI Build](https://travis-ci.org/shopgate/cloud-sdk-webpack.svg?branch=master)](https://travis-ci.org/shopgate/cloud-sdk-webpack)
+[![GitHub release](https://img.shields.io/github/release/shopgate/cloud-sdk-webpack.svg)]()
+[![Coverage Status](https://coveralls.io/repos/github/shopgate/cloud-sdk-webpack/badge.svg?branch=master)](https://coveralls.io/github/shopgate/cloud-sdk-webpack?branch=master)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 ## Installation
 
 ```
