@@ -5,64 +5,81 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const webpack = require('webpack')
-const rimraf = require('rimraf')
-const WebpackConfigurator = require('../webpackConfig/WebpackConfigurator')
-const themes = require('../Themes')
-const logHelper = require('../LogHelper')
-const logger = require('../../../logger')
+import webpack from 'webpack';
+import rimraf from 'rimraf';
+import WebpackConfigurator from '../webpackConfig/WebpackConfigurator';
+import themes from '../Themes';
+import logger, { logHelper } from '../logger';
 
+/**
+ * The Webpack process class.
+ */
 class WebpackProcess {
-  constructor () {
-    this.configurator = new WebpackConfigurator()
-    this.webpackConfig = null
-    this.compiler = null
+  /**
+   * WebpackProcess.
+   */
+  constructor() {
+    this.configurator = new WebpackConfigurator();
+    this.webpackConfig = null;
+    this.compiler = null;
+    this.logger = logger;
 
-    this.init()
+    this.init();
   }
 
-  init () {
+  /**
+   * Sets up the process environment.
+   */
+  init() {
     this.configurator
       .setConfigPath(themes.getConfig())
-      .loadThemeConfig()
+      .loadThemeConfig();
 
-    this.webpackConfig = this.configurator.getConfig()
-    this.compiler = webpack(this.webpackConfig)
+    this.webpackConfig = this.configurator.getConfig();
+    this.compiler = webpack(this.webpackConfig);
   }
 
-  start () {
+  /**
+   * Starts the Webpack compiler.
+   */
+  start() {
     // Log startup logo.
-    logHelper.logLogoBuild()
+    logHelper.logLogoBuild();
     // Clear previous build.
     rimraf(this.webpackConfig.output.path, () => {
       // Run webpack.
-      this.compiler.run(this.handleOutput)
-    })
+      this.compiler.run(this.handleOutput);
+    });
   }
 
-  handleOutput (err, stats) {
+  /**
+   * Handles the Webpack console output.
+   * @param {Object} err A node process error.
+   * @param {Object} stats The webpack compilation output.
+   */
+  handleOutput(err, stats) {
     if (err) {
-      logger.error(err.stack || err)
+      this.logger.error(err.stack || err);
 
       if (err.details) {
-        logger.error(err.details)
+        this.logger.error(err.details);
       }
 
-      return
+      return;
     }
 
     if (stats.hasErrors()) {
-      logger.plain(stats.toString({
+      this.logger.log(stats.toString({
         colors: true,
         warnings: false,
-        chunks: false
-      }))
+        chunks: false,
+      }));
 
-      return
+      return;
     }
 
-    logHelper.logBuildFinished()
+    logHelper.logBuildFinished();
   }
 }
 
-module.exports = new WebpackProcess()
+export default new WebpackProcess();

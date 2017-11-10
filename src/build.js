@@ -5,4 +5,4 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-require('./WebpackProcess').start();
+console.warn('HI WILL BUILD!');

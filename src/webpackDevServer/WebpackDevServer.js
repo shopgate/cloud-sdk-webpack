@@ -5,47 +5,50 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const webpack = require('webpack')
-const WpDevServer = require('webpack-dev-server')
-const WebpackConfigurator = require('../webpackConfig/WebpackConfigurator')
-const themes = require('../Themes')
+import webpack from 'webpack';
+import WpDevServer from 'webpack-dev-server';
+import WebpackConfigurator from '../webpackConfig/WebpackConfigurator';
+import themes from '../Themes';
 
 /**
  * The WebpackDevServer class.
  */
 class WebpackDevServer {
-  constructor () {
-    this.configurator = new WebpackConfigurator()
-    this.webpackConfig = null
-    this.serverConfig = null
-    this.compiler = null
-    this.server = null
+  /**
+   * WebpackDevServer.
+   */
+  constructor() {
+    this.configurator = new WebpackConfigurator();
+    this.webpackConfig = null;
+    this.serverConfig = null;
+    this.compiler = null;
+    this.server = null;
 
-    this.init()
+    this.init();
   }
 
   /**
    * Creates all the necessary elements.
    */
-  init () {
+  init() {
     this.configurator
       .setConfigPath(themes.getConfig())
-      .loadThemeConfig()
+      .loadThemeConfig();
 
-    this.webpackConfig = this.configurator.getConfig()
-    this.serverConfig = this.configurator.getServerConfig()
-    this.compiler = webpack(this.webpackConfig)
-    this.server = new WpDevServer(this.compiler, this.serverConfig)
+    this.webpackConfig = this.configurator.getConfig();
+    this.serverConfig = this.configurator.getServerConfig();
+    this.compiler = webpack(this.webpackConfig);
+    this.server = new WpDevServer(this.compiler, this.serverConfig);
   }
 
   /**
    * Starts the webpack dev server instance.
    */
-  start () {
-    const { host, port } = this.serverConfig
+  start() {
+    const { host, port } = this.serverConfig;
 
-    this.server.listen(port, host)
+    this.server.listen(port, host);
   }
 }
 
-module.exports = new WebpackDevServer()
+export default new WebpackDevServer();
