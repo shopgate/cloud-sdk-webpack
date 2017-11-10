@@ -6,7 +6,7 @@
  */
 
 import assert from 'assert';
-import webpackProcess from '../src/WebpackProcess';
+import webpackProcess from '../../src/webpack/WebpackProcess';
 
 describe('WebpackProcess', () => {
   it('should be there', () => {

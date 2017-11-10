@@ -5,6 +5,13 @@
   "plugins": [
     "transform-object-rest-spread",
     "transform-class-properties",
-    "transform-export-extensions"
+    "transform-export-extensions",
+    ["module-resolver", {
+      "cwd": "babelrc",
+      "alias": {
+        "Src": "./src",
+        "Test": "./test"
+      }
+    }]
   ]
 }
