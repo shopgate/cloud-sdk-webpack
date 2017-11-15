@@ -7,7 +7,7 @@
 
 import assert from 'assert';
 
-describe('convertLanguageToISO', () => {
+describe('Polyfill', () => {
   before(() => {
     String.prototype.padEnd = undefined // eslint-disable-line no-extend-native
     require('Src/webpackConfig/helpers/polyfill'); // eslint-disable-line global-require
