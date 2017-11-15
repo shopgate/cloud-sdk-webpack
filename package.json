@@ -2,7 +2,6 @@
   "name": "@shopgate/cloud-sdk-webpack",
   "version": "0.0.1",
   "description": "Shopgate's Webpack compiler",
-  "main": "index.js",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -23,19 +22,22 @@
     "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)",
     "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)"
   ],
+  "main": "index.js",
   "bin": {
     "sgcloud-webpack": "./bin/sgcloud-webpack"
   },
   "scripts": {
-    "test": "mocha --recursive --require babel-core/register --require jsdom-global/register test",
-    "cover": "rimraf ./build && nyc mocha --recursive --require babel-core/register --require jsdom-global/register test",
-    "pre-build": "rimraf ./dist",
-    "compile": "NODE_ENV=production babel src --out-dir dist --no-comments --minified",
-    "compile:dev": "NODE_ENV=production babel src --out-dir dist",
-    "post-build": "cp -R ./src/webpackConfig/templates ./dist/webpackConfig/",
-    "build": "npm run pre-build && npm run compile && npm run post-build",
-    "build:dev": "npm run pre-build && npm run compile:dev && npm run post-build",
+    "test": "mocha",
+    "cover": "rimraf ./build ./.nyc_output && nyc mocha",
+    "compile": "NODE_ENV=production babel src --out-dir dist",
+    "lint-staged": "lint-staged",
+    "prebuild": "rimraf ./dist",
+    "build": "npm run prebuild && npm run compile && npm run postbuild",
+    "postbuild": "cp -R ./src/webpackConfig/templates ./dist/webpackConfig/",
     "production": "node ./bin/sgcloud-webpack"
+  },
+  "lint-staged": {
+    "*.js": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js ."
   },
   "devDependencies": {
     "@shopgate/eslint-config": "^1.0.2",
@@ -53,8 +55,10 @@
     "eslint-import-resolver-babel-module": "4.0.0-beta.1",
     "jsdom": "^11.3.0",
     "jsdom-global": "^3.0.2",
+    "lint-staged": "^5.0.0",
     "mocha": "^4.0.1",
     "nyc": "^11.3.0",
+    "pre-commit": "^1.2.2",
     "rimraf": "^2.6.2",
     "sinon": "^4.1.2"
   },
@@ -82,6 +86,10 @@
     "node": ">= 8.0.0",
     "npm": ">= 5.0.0"
   },
+  "pre-commit": [
+    "lint-staged",
+    "build"
+  ],
   "nyc": {
     "include": [
       "**/*.js"
