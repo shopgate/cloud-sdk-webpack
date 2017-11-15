@@ -16,10 +16,7 @@ const THEME_PATH = themes.getPath();
 const LANG = convertLanguageToISO(process.env.settings.language);
 const NODE_MODULES = 'node_modules';
 const LOCAL_NODE_MODULES = resolve(__dirname, '..', '..', NODE_MODULES);
-const SDK_NODE_MODULES = resolve(LOCAL_NODE_MODULES, '..', '..', '..');
-
-console.log(LOCAL_NODE_MODULES);
-console.log(SDK_NODE_MODULES);
+const SDK_NODE_MODULES = resolve(process.env.SDK_PATH, NODE_MODULES);
 
 const stringReplacementLoader = StringReplacePlugin.replace({
   replacements: [{
@@ -39,9 +36,9 @@ export default {
   },
   entry: {
     common: [
-      resolve(LOCAL_NODE_MODULES, 'babel-polyfill'),
-      resolve(LOCAL_NODE_MODULES, 'intl'),
-      resolve(LOCAL_NODE_MODULES, `intl/locale-data/jsonp/${LANG}.js`),
+      'babel-polyfill',
+      'intl',
+      `intl/locale-data/jsonp/${LANG}.js`,
       'react',
       'react-dom',
       resolve(__dirname, './helpers/polyfill'),
@@ -57,26 +54,26 @@ export default {
       {
         test: /\.css$/,
         use: [
-          resolve(LOCAL_NODE_MODULES, 'style-loader'),
-          resolve(LOCAL_NODE_MODULES, 'css-loader'),
+          'style-loader',
+          'css-loader',
         ],
       },
       {
         test: /\.json$/,
         use: [
-          resolve(LOCAL_NODE_MODULES, 'json-loader'),
+          'json-loader',
         ],
       },
       {
         test: /\.svg$/,
         use: [
-          resolve(LOCAL_NODE_MODULES, 'svg-inline-loader'),
+          'svg-inline-loader',
         ],
       },
       {
         test: /\.ejs/,
         use: [
-          resolve(LOCAL_NODE_MODULES, 'ejs-loader'),
+          'ejs-loader',
         ],
       },
       {
@@ -87,9 +84,9 @@ export default {
         ],
         use: [
           stringReplacementLoader,
-          resolve(LOCAL_NODE_MODULES, 'cache-loader'),
+          'cache-loader',
           {
-            loader: resolve(LOCAL_NODE_MODULES, 'babel-loader'),
+            loader: 'babel-loader',
             options: {
               compact: true,
               comments: !!isDev,
