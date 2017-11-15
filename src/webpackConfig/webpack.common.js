@@ -36,9 +36,9 @@ export default {
   },
   entry: {
     common: [
-      'babel-polyfill',
-      'intl',
-      `intl/locale-data/jsonp/${LANG}.js`,
+      resolve(SDK_NODE_MODULES, 'babel-polyfill'),
+      resolve(SDK_NODE_MODULES, 'intl'),
+      resolve(SDK_NODE_MODULES, `intl/locale-data/jsonp/${LANG}.js`),
       'react',
       'react-dom',
       resolve(__dirname, './helpers/polyfill'),
@@ -54,26 +54,26 @@ export default {
       {
         test: /\.css$/,
         use: [
-          'style-loader',
-          'css-loader',
+          resolve(SDK_NODE_MODULES, 'style-loader'),
+          resolve(SDK_NODE_MODULES, 'css-loader'),
         ],
       },
       {
         test: /\.json$/,
         use: [
-          'json-loader',
+          resolve(SDK_NODE_MODULES, 'json-loader'),
         ],
       },
       {
         test: /\.svg$/,
         use: [
-          'svg-inline-loader',
+          resolve(SDK_NODE_MODULES, 'svg-inline-loader'),
         ],
       },
       {
         test: /\.ejs/,
         use: [
-          'ejs-loader',
+          resolve(SDK_NODE_MODULES, 'ejs-loader'),
         ],
       },
       {
@@ -86,7 +86,7 @@ export default {
           stringReplacementLoader,
           'cache-loader',
           {
-            loader: 'babel-loader',
+            loader: resolve(SDK_NODE_MODULES, 'babel-loader'),
             options: {
               compact: true,
               comments: !!isDev,
