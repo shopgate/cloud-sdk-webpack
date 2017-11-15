@@ -13,7 +13,7 @@ import { isDev } from '../environment';
 import themes from '../Themes';
 
 const THEME_PATH = themes.getPath();
-const LANG = convertLanguageToISO(process.env.settings.language);
+const LANG = convertLanguageToISO(process.env.settings.language) || 'en-US';
 const NODE_MODULES = 'node_modules';
 const LOCAL_NODE_MODULES = resolve(__dirname, '..', '..', NODE_MODULES);
 const SDK_NODE_MODULES = resolve(process.env.SDK_PATH, NODE_MODULES);
@@ -84,7 +84,7 @@ export default {
         ],
         use: [
           stringReplacementLoader,
-          'cache-loader',
+          resolve(SDK_NODE_MODULES, 'cache-loader'),
           {
             loader: resolve(SDK_NODE_MODULES, 'babel-loader'),
             options: {

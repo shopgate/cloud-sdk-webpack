@@ -30,7 +30,7 @@
     "test": "mocha",
     "cover": "rimraf ./build ./.nyc_output && nyc mocha",
     "lint-staged": "lint-staged",
-    "build": "rimraf ./dist && NODE_ENV=production babel src --out-dir dist && cp -R ./src/webpackConfig/templates ./dist/webpackConfig/",
+    "build": "rimraf ./dist && NODE_ENV=production babel src --out-dir dist && cp -R ./src/webpackConfig/templates ./dist/webpackConfig/ && git add -A",
     "production": "node ./bin/sgcloud-webpack"
   },
   "lint-staged": {

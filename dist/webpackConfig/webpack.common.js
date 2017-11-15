@@ -34,7 +34,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                                                                                                                                                                                                      */
 
 var THEME_PATH = _Themes2.default.getPath();
-var LANG = (0, _convertLanguageToISO2.default)(process.env.settings.language);
+var LANG = (0, _convertLanguageToISO2.default)(process.env.settings.language) || 'en-US';
 var NODE_MODULES = 'node_modules';
 var LOCAL_NODE_MODULES = (0, _path.resolve)(__dirname, '..', '..', NODE_MODULES);
 var SDK_NODE_MODULES = (0, _path.resolve)(process.env.SDK_PATH, NODE_MODULES);
@@ -81,7 +81,7 @@ exports.default = {
     }, {
       test: /\.(js|jsx)$/,
       exclude: [(0, _path.resolve)(process.env.SDK_PATH), (0, _path.resolve)(process.env.SDK_PATH, 'bin')],
-      use: [stringReplacementLoader, 'cache-loader', {
+      use: [stringReplacementLoader, (0, _path.resolve)(SDK_NODE_MODULES, 'cache-loader'), {
         loader: (0, _path.resolve)(SDK_NODE_MODULES, 'babel-loader'),
         options: {
           compact: true,
