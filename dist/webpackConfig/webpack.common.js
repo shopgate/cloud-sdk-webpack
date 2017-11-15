@@ -37,6 +37,10 @@ var THEME_PATH = _Themes2.default.getPath();
 var LANG = (0, _convertLanguageToISO2.default)(process.env.settings.language);
 var NODE_MODULES = 'node_modules';
 var LOCAL_NODE_MODULES = (0, _path.resolve)(__dirname, '..', '..', NODE_MODULES);
+var SDK_NODE_MODULES = (0, _path.resolve)(LOCAL_NODE_MODULES, '..', '..', '..');
+
+console.log(LOCAL_NODE_MODULES);
+console.log(SDK_NODE_MODULES);
 
 var stringReplacementLoader = _stringReplaceWebpackPlugin2.default.replace({
   replacements: [{
@@ -93,7 +97,7 @@ exports.default = {
   },
   resolve: {
     extensions: ['.json', '.js', '.jsx'],
-    modules: [(0, _path.resolve)(THEME_PATH, NODE_MODULES), (0, _path.resolve)(__dirname, NODE_MODULES)].concat(_toConsumableArray((0, _getExtensionsNodeModulesPaths2.default)()))
+    modules: [(0, _path.resolve)(THEME_PATH, NODE_MODULES), (0, _path.resolve)(SDK_NODE_MODULES), (0, _path.resolve)(LOCAL_NODE_MODULES)].concat(_toConsumableArray((0, _getExtensionsNodeModulesPaths2.default)()))
   },
   performance: {
     hints: false

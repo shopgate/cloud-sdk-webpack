@@ -29,11 +29,8 @@
   "scripts": {
     "test": "mocha",
     "cover": "rimraf ./build ./.nyc_output && nyc mocha",
-    "compile": "NODE_ENV=production babel src --out-dir dist",
     "lint-staged": "lint-staged",
-    "prebuild": "rimraf ./dist",
-    "build": "npm run prebuild && npm run compile && npm run postbuild",
-    "postbuild": "cp -R ./src/webpackConfig/templates ./dist/webpackConfig/",
+    "build": "rimraf ./dist && NODE_ENV=production babel src --out-dir dist && cp -R ./src/webpackConfig/templates ./dist/webpackConfig/",
     "production": "node ./bin/sgcloud-webpack"
   },
   "lint-staged": {
@@ -44,7 +41,6 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-plugin-module-resolver": "3.0.0-beta.0",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",

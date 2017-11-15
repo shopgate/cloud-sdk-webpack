@@ -16,6 +16,10 @@ const THEME_PATH = themes.getPath();
 const LANG = convertLanguageToISO(process.env.settings.language);
 const NODE_MODULES = 'node_modules';
 const LOCAL_NODE_MODULES = resolve(__dirname, '..', '..', NODE_MODULES);
+const SDK_NODE_MODULES = resolve(LOCAL_NODE_MODULES, '..', '..', '..');
+
+console.log(LOCAL_NODE_MODULES);
+console.log(SDK_NODE_MODULES);
 
 const stringReplacementLoader = StringReplacePlugin.replace({
   replacements: [{
@@ -101,7 +105,8 @@ export default {
     extensions: ['.json', '.js', '.jsx'],
     modules: [
       resolve(THEME_PATH, NODE_MODULES),
-      resolve(__dirname, NODE_MODULES),
+      resolve(SDK_NODE_MODULES),
+      resolve(LOCAL_NODE_MODULES),
       ...getExtensionsNodeModulesPaths(),
     ],
   },
