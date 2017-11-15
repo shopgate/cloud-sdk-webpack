@@ -58,7 +58,7 @@ exports.default = {
     progress: true
   },
   entry: {
-    common: ['babel-polyfill', 'intl', 'intl/locale-data/jsonp/' + LANG + '.js', 'react', 'react-dom', (0, _path.resolve)(__dirname, './helpers/polyfill')]
+    common: [(0, _path.resolve)(SDK_NODE_MODULES, 'babel-polyfill'), (0, _path.resolve)(SDK_NODE_MODULES, 'intl'), (0, _path.resolve)(SDK_NODE_MODULES, 'intl/locale-data/jsonp/' + LANG + '.js'), 'react', 'react-dom', (0, _path.resolve)(__dirname, './helpers/polyfill')]
   },
   externals: {
     cheerio: 'window',
@@ -68,21 +68,21 @@ exports.default = {
   module: {
     rules: [{
       test: /\.css$/,
-      use: ['style-loader', 'css-loader']
+      use: [(0, _path.resolve)(SDK_NODE_MODULES, 'style-loader'), (0, _path.resolve)(SDK_NODE_MODULES, 'css-loader')]
     }, {
       test: /\.json$/,
-      use: ['json-loader']
+      use: [(0, _path.resolve)(SDK_NODE_MODULES, 'json-loader')]
     }, {
       test: /\.svg$/,
-      use: ['svg-inline-loader']
+      use: [(0, _path.resolve)(SDK_NODE_MODULES, 'svg-inline-loader')]
     }, {
       test: /\.ejs/,
-      use: ['ejs-loader']
+      use: [(0, _path.resolve)(SDK_NODE_MODULES, 'ejs-loader')]
     }, {
       test: /\.(js|jsx)$/,
       exclude: [(0, _path.resolve)(process.env.SDK_PATH), (0, _path.resolve)(process.env.SDK_PATH, 'bin')],
       use: [stringReplacementLoader, 'cache-loader', {
-        loader: 'babel-loader',
+        loader: (0, _path.resolve)(SDK_NODE_MODULES, 'babel-loader'),
         options: {
           compact: true,
           comments: !!_environment.isDev,
