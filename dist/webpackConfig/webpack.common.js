@@ -37,10 +37,7 @@ var THEME_PATH = _Themes2.default.getPath();
 var LANG = (0, _convertLanguageToISO2.default)(process.env.settings.language);
 var NODE_MODULES = 'node_modules';
 var LOCAL_NODE_MODULES = (0, _path.resolve)(__dirname, '..', '..', NODE_MODULES);
-var SDK_NODE_MODULES = (0, _path.resolve)(LOCAL_NODE_MODULES, '..', '..', '..');
-
-console.log(LOCAL_NODE_MODULES);
-console.log(SDK_NODE_MODULES);
+var SDK_NODE_MODULES = (0, _path.resolve)(process.env.SDK_PATH, NODE_MODULES);
 
 var stringReplacementLoader = _stringReplaceWebpackPlugin2.default.replace({
   replacements: [{
@@ -61,7 +58,7 @@ exports.default = {
     progress: true
   },
   entry: {
-    common: [(0, _path.resolve)(LOCAL_NODE_MODULES, 'babel-polyfill'), (0, _path.resolve)(LOCAL_NODE_MODULES, 'intl'), (0, _path.resolve)(LOCAL_NODE_MODULES, 'intl/locale-data/jsonp/' + LANG + '.js'), 'react', 'react-dom', (0, _path.resolve)(__dirname, './helpers/polyfill')]
+    common: ['babel-polyfill', 'intl', 'intl/locale-data/jsonp/' + LANG + '.js', 'react', 'react-dom', (0, _path.resolve)(__dirname, './helpers/polyfill')]
   },
   externals: {
     cheerio: 'window',
@@ -71,21 +68,21 @@ exports.default = {
   module: {
     rules: [{
       test: /\.css$/,
-      use: [(0, _path.resolve)(LOCAL_NODE_MODULES, 'style-loader'), (0, _path.resolve)(LOCAL_NODE_MODULES, 'css-loader')]
+      use: ['style-loader', 'css-loader']
     }, {
       test: /\.json$/,
-      use: [(0, _path.resolve)(LOCAL_NODE_MODULES, 'json-loader')]
+      use: ['json-loader']
     }, {
       test: /\.svg$/,
-      use: [(0, _path.resolve)(LOCAL_NODE_MODULES, 'svg-inline-loader')]
+      use: ['svg-inline-loader']
     }, {
       test: /\.ejs/,
-      use: [(0, _path.resolve)(LOCAL_NODE_MODULES, 'ejs-loader')]
+      use: ['ejs-loader']
     }, {
       test: /\.(js|jsx)$/,
       exclude: [(0, _path.resolve)(process.env.SDK_PATH), (0, _path.resolve)(process.env.SDK_PATH, 'bin')],
-      use: [stringReplacementLoader, (0, _path.resolve)(LOCAL_NODE_MODULES, 'cache-loader'), {
-        loader: (0, _path.resolve)(LOCAL_NODE_MODULES, 'babel-loader'),
+      use: [stringReplacementLoader, 'cache-loader', {
+        loader: 'babel-loader',
         options: {
           compact: true,
           comments: !!_environment.isDev,
