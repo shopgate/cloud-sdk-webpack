@@ -48,6 +48,8 @@ var stringReplacementLoader = _stringReplaceWebpackPlugin2.default.replace({
   }]
 });
 
+var hotEntry = _environment.isDev ? [(0, _path.resolve)(SDK_NODE_MODULES, 'react-hot-loader/patch')] : [];
+
 exports.default = {
   context: (0, _path.resolve)(THEME_PATH),
   devServer: {
@@ -58,7 +60,7 @@ exports.default = {
     progress: true
   },
   entry: {
-    common: [(0, _path.resolve)(SDK_NODE_MODULES, 'babel-polyfill'), (0, _path.resolve)(SDK_NODE_MODULES, 'intl'), (0, _path.resolve)(SDK_NODE_MODULES, 'intl/locale-data/jsonp/' + LANG + '.js'), 'react', 'react-dom', (0, _path.resolve)(__dirname, './helpers/polyfill')]
+    common: [(0, _path.resolve)(SDK_NODE_MODULES, 'babel-polyfill')].concat(hotEntry, [(0, _path.resolve)(SDK_NODE_MODULES, 'intl'), (0, _path.resolve)(SDK_NODE_MODULES, 'intl/locale-data/jsonp/' + LANG + '.js'), 'react', 'react-dom', (0, _path.resolve)(__dirname, './helpers/polyfill')])
   },
   externals: {
     cheerio: 'window',
