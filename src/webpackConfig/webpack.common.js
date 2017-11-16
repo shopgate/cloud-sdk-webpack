@@ -8,12 +8,15 @@
 import { resolve } from 'path';
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import convertLanguageToISO from './helpers/convertLanguageToISO';
+import getAppSettings from './helpers/getAppSettings';
 import getExtensionsNodeModulesPaths from './helpers/getExtensionsNodeModulesPaths';
 import { isDev } from '../environment';
 import themes from '../Themes';
 
+const { language } = getAppSettings();
+
 const THEME_PATH = themes.getPath();
-const LANG = convertLanguageToISO(process.env.settings.language) || 'en-US';
+const LANG = convertLanguageToISO(language);
 const NODE_MODULES = 'node_modules';
 const LOCAL_NODE_MODULES = resolve(__dirname, '..', '..', NODE_MODULES);
 const SDK_NODE_MODULES = resolve(process.env.SDK_PATH, NODE_MODULES);

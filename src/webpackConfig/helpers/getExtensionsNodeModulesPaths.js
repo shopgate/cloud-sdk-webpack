@@ -7,16 +7,16 @@
 
 import { join } from 'path';
 import themes from '../../Themes';
+import getAppSettings from './getAppSettings';
 
-const extensions = process.env.settings.getExtensions();
-const path = themes.getPath();
+const { extensions } = getAppSettings();
 
 /**
  * Returns the node modules paths to all extensions.
  * @return {Array}
  */
 const getExtensionsNodeModulePaths = () => (
-  extensions.map(name => join(path, 'extensions', name, 'frontend', 'node_modules'))
+  extensions.map(name => join(themes.getPath(), 'extensions', name, 'frontend', 'node_modules'))
 );
 
 export default getExtensionsNodeModulePaths;

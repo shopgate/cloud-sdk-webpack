@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import logger from '../logger';
+
 /**
  * The WebpackConfigurator class.
  */
@@ -46,8 +48,13 @@ class WebpackConfigurator {
    * @return {WebpackConfigurator}
    */
   setConfigPath(configPath) {
-    this.configPath = configPath;
-    return this;
+    try {
+      this.configPath = configPath;
+      return this;
+    } catch (error) {
+      logger.error('setConfigPath');
+      throw error;
+    }
   }
 
   /**

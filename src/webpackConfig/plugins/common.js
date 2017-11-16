@@ -13,12 +13,14 @@ import StringReplacePlugin from 'string-replace-webpack-plugin';
 import ProgressBarWebpackPlugin from 'progress-bar-webpack-plugin';
 import themes from '../../Themes';
 import convertLanguageToISO from '../helpers/convertLanguageToISO';
+import getAppSettings from '../helpers/getAppSettings';
+import getComponentsSettings from '../helpers/getComponentsSettings';
+import getDevConfig from '../helpers/getDevConfig';
 import { ENV, isDev, isProd } from '../../environment';
 
-const appSettings = process.env.settings;
-const appConfig = appSettings.getAppSettings();
-const frontendSettings = appSettings.getFrontendSettings();
-const componentsConfig = appSettings.getComponentsSettings();
+const appConfig = getAppSettings();
+const componentsConfig = getComponentsSettings();
+const { ip, apiPort } = getDevConfig();
 
 const THEME_PATH = themes.getPath();
 const THEME_NAME = themes.getName();
@@ -38,14 +40,11 @@ const plugins = [
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(ENV),
-      APP_CONFIG: JSON.stringify({
-        ...appConfig,
-        appId: appConfig.id,
-      }),
+      APP_CONFIG: JSON.stringify(appConfig),
       COMPONENTS_CONFIG: JSON.stringify(componentsConfig),
       LANG: JSON.stringify(LANG),
-      IP: JSON.stringify(frontendSettings.getIpAddress()),
-      PORT: JSON.stringify(frontendSettings.getApiPort()),
+      IP: JSON.stringify(ip),
+      PORT: JSON.stringify(apiPort),
     },
   }),
   new webpack.LoaderOptionsPlugin({
