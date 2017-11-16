@@ -5,18 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/**
- * Runs the webpackDevServer process.
- * @param {Object} env The environment process config.
- */
-module.exports = (env) => {
-  process.env = {
-    ...process.env,
-    ...env,
-  };
-
-  setTimeout(() => {
-    // eslint-disable-next-line global-require
-    require('./lib/webpackDevServer/WebpackDevServer').default.start();
-  }, 300);
-};
+setTimeout(() => {
+  // eslint-disable-next-line global-require
+  require('./lib/webpackDevServer/WebpackDevServer').default.start();
+}, 500);

@@ -20,17 +20,23 @@ const getDevConfig = () => {
   };
 
   try {
-    const appSettings = process.env.settings;
-    const frontendSettings = appSettings.getFrontendSettings();
+    const {
+      ip,
+      port,
+      apiPort,
+      hmrPort,
+      remotePort,
+      sourceMapsType,
+    } = JSON.parse(process.env.settings);
 
     return {
       ...defaultConfig,
-      ip: frontendSettings.getIpAddress(),
-      port: frontendSettings.getPort(),
-      apiPort: frontendSettings.getApiPort(),
-      hmrPort: frontendSettings.getHmrPort(),
-      remotePort: frontendSettings.getRemotePort(),
-      sourceMap: frontendSettings.getSourceMapsType(),
+      ip,
+      port,
+      apiPort,
+      hmrPort,
+      remotePort,
+      sourceMap: sourceMapsType,
     };
   } catch (e) {
     return defaultConfig;
