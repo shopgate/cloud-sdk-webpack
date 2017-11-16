@@ -1,0 +1,7 @@
+build/
+test/
+.nyc_output/
+.babelrc
+.eslintignore
+.eslintrc.js
+.travis.yml
