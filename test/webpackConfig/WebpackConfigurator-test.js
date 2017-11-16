@@ -22,9 +22,7 @@ describe('WebPackConfigurator', () => {
   it('should load a return a config', () => {
     configurator.loadThemeConfig();
     assert.deepEqual(configurator.getConfig(), {
-      default: {
-        isConfig: true,
-      },
+      isConfig: true,
     });
   });
 
