@@ -18,5 +18,5 @@ module.exports = (env) => {
   setTimeout(() => {
     // eslint-disable-next-line global-require
     require('./dist/webpackDevServer/WebpackDevServer').default.start();
-  }, 0);
+  }, 300);
 };
