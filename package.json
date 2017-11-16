@@ -99,12 +99,12 @@
   ],
   "nyc": {
     "include": [
-      "**/*.js"
+      "src/**/*.js"
     ],
     "exclude": [
       "build",
       "test",
-      "dist"
+      "lib"
     ],
     "reporter": [
       "lcov",
