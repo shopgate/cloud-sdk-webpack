@@ -34,7 +34,10 @@
     "prebuild": "rimraf ./dist",
     "build": "NODE_ENV=production babel src --out-dir dist --no-comments --minified",
     "postbuild": "cp -R ./src/webpackConfig/templates ./dist/webpackConfig/ && git add -A",
-    "production": "node ./bin/sgcloud-webpack"
+    "production": "node ./bin/sgcloud-webpack",
+    "preversion": "npm test",
+    "version": "npm run build && git add -A",
+    "postversion": "git push && git push --tags"
   },
   "lint-staged": {
     "*.js": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js ."
