@@ -56,7 +56,9 @@ class WebpackConfigurator {
   loadThemeConfig() {
     try {
       // eslint-disable-next-line global-require, import/no-dynamic-require
-      this.config = require(this.configPath).default;
+      const config = require(this.configPath);
+      // Check if comming from default export or module.exports
+      this.config = config.default ? config.default : config;
     } catch (error) {
       throw error;
     }
