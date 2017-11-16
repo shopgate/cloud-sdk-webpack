@@ -2,6 +2,7 @@ build/
 test/
 .nyc_output/
 .babelrc
+.editorconfig
 .eslintignore
 .eslintrc.js
 .travis.yml
