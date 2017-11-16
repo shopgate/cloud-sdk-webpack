@@ -32,7 +32,7 @@
     "lint": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js .",
     "lint-staged": "lint-staged",
     "prebuild": "rimraf ./lib",
-    "build": "NODE_ENV=production babel src --out-dir lib --no-comments --minified",
+    "build": "NODE_ENV=production babel src --out-dir lib --no-comments",
     "postbuild": "cp -R ./src/webpackConfig/templates ./lib/webpackConfig/ && git add -A",
     "production": "node ./bin/sgcloud-webpack",
     "preversion": "npm test",
