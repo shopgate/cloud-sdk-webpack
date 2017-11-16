@@ -1,5 +1,6 @@
 build/
 test/
+src/
 .nyc_output/
 .babelrc
 .editorconfig

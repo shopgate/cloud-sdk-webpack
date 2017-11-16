@@ -1,5 +1,5 @@
 bin/
-dist/
+lib/
 build/
 test/
 .nyc_output/

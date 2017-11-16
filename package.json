@@ -31,13 +31,13 @@
     "cover": "rimraf ./build ./.nyc_output && nyc mocha",
     "lint": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js .",
     "lint-staged": "lint-staged",
-    "prebuild": "rimraf ./dist",
-    "build": "NODE_ENV=production babel src --out-dir dist --no-comments --minified",
-    "postbuild": "cp -R ./src/webpackConfig/templates ./dist/webpackConfig/ && git add -A",
+    "prebuild": "rimraf ./lib",
+    "build": "NODE_ENV=production babel src --out-dir lib --no-comments --minified",
+    "postbuild": "cp -R ./src/webpackConfig/templates ./lib/webpackConfig/ && git add -A",
     "production": "node ./bin/sgcloud-webpack",
     "preversion": "npm test",
     "version": "npm run build && git add -A",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags && npm publish --access public"
   },
   "lint-staged": {
     "*.js": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js ."

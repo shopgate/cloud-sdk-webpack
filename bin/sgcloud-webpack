@@ -4,7 +4,7 @@
 
 const { argv } = require('yargs');
 const { resolve } = require('path');
-const { ENV_KEY_PRODUCTION } = require('../dist/environment');
+const { ENV_KEY_PRODUCTION } = require('../lib/environment');
 
 // Set the theme key.
 if (argv.theme) {
@@ -16,4 +16,4 @@ process.env.SDK_PATH = resolve(__dirname, '..');
 // Set the environment to production.
 process.env.NODE_ENV = ENV_KEY_PRODUCTION;
 
-require('../dist/build.js');
+require('../lib/build.js');
