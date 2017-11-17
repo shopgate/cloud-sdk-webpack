@@ -9,6 +9,7 @@ import webpack from 'webpack';
 import WpDevServer from 'webpack-dev-server';
 import WebpackConfigurator from 'Src/webpackConfig/WebpackConfigurator';
 import themes from 'Src/Themes';
+import { logHelper } from 'Src/logger';
 
 /**
  * The WebpackDevServer class.
@@ -35,6 +36,7 @@ class WebpackDevServer {
       .setConfigPath(themes.getConfig())
       .loadThemeConfig();
 
+    logHelper.logLogoStart();
     this.webpackConfig = this.configurator.getConfig();
     this.serverConfig = this.configurator.getServerConfig();
     this.compiler = webpack(this.webpackConfig);

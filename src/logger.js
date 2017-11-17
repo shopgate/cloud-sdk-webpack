@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { green, blue } from 'chalk';
+import { green, blue, bold } from 'chalk';
 
 /**
  * The Logger class hold static functions for logging useful information when running
@@ -45,6 +45,13 @@ class LogHelper {
    */
   getPrefix() {
     return this.prefix;
+  }
+
+  /**
+   * Logs the webpack startup.
+   */
+  logLogoStart() {
+    this.logger.log(`  Starting ${bold('Webpack Development Server')} ...\n`);
   }
 
   /**
