@@ -24,32 +24,27 @@ class WebpackDevServer {
     this.serverConfig = null;
     this.compiler = null;
     this.server = null;
-
-    this.init();
-  }
-
-  /**
-   * Creates all the necessary elements.
-   */
-  init() {
-    this.configurator
-      .setConfigPath(themes.getConfig())
-      .loadThemeConfig();
-
-    logHelper.logLogoStart();
-    this.webpackConfig = this.configurator.getConfig();
-    this.serverConfig = this.configurator.getServerConfig();
-    this.compiler = webpack(this.webpackConfig);
-    this.server = new WpDevServer(this.compiler, this.serverConfig);
   }
 
   /**
    * Starts the webpack dev server instance.
    */
   start() {
-    const { host, port } = this.serverConfig;
+    themes.init(() => {
+      this.configurator
+        .setConfigPath(themes.getConfig())
+        .loadThemeConfig();
 
-    this.server.listen(port, host);
+      logHelper.logLogoStart();
+      this.webpackConfig = this.configurator.getConfig();
+      this.serverConfig = this.configurator.getServerConfig();
+      this.compiler = webpack(this.webpackConfig);
+      this.server = new WpDevServer(this.compiler, this.serverConfig);
+
+      const { host, port } = this.serverConfig;
+
+      this.server.listen(port, host);
+    });
   }
 }
 
