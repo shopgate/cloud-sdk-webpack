@@ -6,7 +6,7 @@
  */
 
 import { existsSync, lstatSync, readdirSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { isProd } from './environment';
 
 /**
@@ -77,7 +77,7 @@ class Themes {
    */
   findThemes() {
     // Absolute path to the themes.
-    const source = `${process.env.PWD}/themes`;
+    const source = resolve(`${process.cwd()}/themes`);
 
     // Get all folders inside the themes directory.
     const folders = readdirSync(source)
