@@ -24,6 +24,7 @@ class WebpackConfigurator {
       host: process.env.optionsHost,
       port: process.env.optionsPort,
       progress: true,
+      historyApiFallback: true,
       stats: {
         colors: true,
       },
