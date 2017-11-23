@@ -28,10 +28,6 @@ const stringReplacementLoader = StringReplacePlugin.replace({
   }],
 });
 
-const hotEntry = isDev ? [
-  resolve(SDK_NODE_MODULES, 'react-hot-loader/patch'),
-] : [];
-
 export default {
   context: resolve(THEME_PATH),
   devServer: {
@@ -44,7 +40,6 @@ export default {
   entry: {
     common: [
       resolve(SDK_NODE_MODULES, 'babel-polyfill'),
-      ...hotEntry,
       resolve(SDK_NODE_MODULES, 'intl'),
       resolve(SDK_NODE_MODULES, `intl/locale-data/jsonp/${LANG}.js`),
       'react',

@@ -16,6 +16,7 @@ const THEME_PATH = themes.getPath();
 export default merge(common, {
   entry: {
     app: [
+      resolve(process.env.SDK_PATH, 'node_modules', 'react-hot-loader/patch'),
       './index.jsx',
     ],
   },

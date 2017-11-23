@@ -38,6 +38,9 @@ class WebpackDevServer {
       logHelper.logLogoStart();
       this.webpackConfig = this.configurator.getConfig();
       this.serverConfig = this.configurator.getServerConfig();
+
+      WpDevServer.addDevServerEntrypoints(this.webpackConfig, this.serverConfig);
+
       this.compiler = webpack(this.webpackConfig);
       this.server = new WpDevServer(this.compiler, this.serverConfig);
 
