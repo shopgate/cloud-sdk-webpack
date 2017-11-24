@@ -9,8 +9,9 @@ import assert from 'assert';
 import sinon from 'sinon';
 import { join } from 'path';
 
-process.env.PWD = join(process.cwd(), 'test/mock');
+const projectDirectory = join(process.cwd(), 'test/mock');
 process.env.theme = 'theme1';
+process.cwd = () => projectDirectory;
 
 const themes = require('Src/Themes').default;
 
@@ -21,13 +22,13 @@ const logger = {
 const mockThemes = [
   {
     name: 'theme1',
-    path: join(process.env.PWD, './themes/theme1'),
-    config: join(process.env.PWD, './themes/theme1/webpack.config.js'),
+    path: join(projectDirectory, './themes/theme1'),
+    config: join(projectDirectory, './themes/theme1/webpack.config.js'),
   },
   {
     name: 'theme2',
-    path: join(process.env.PWD, './themes/theme2'),
-    config: join(process.env.PWD, '../../src/webpackConfig/webpack.dev.js'),
+    path: join(projectDirectory, './themes/theme2'),
+    config: join(projectDirectory, '../../src/webpackConfig/webpack.dev.js'),
   },
 ];
 
