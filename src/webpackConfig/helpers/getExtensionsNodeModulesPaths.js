@@ -9,7 +9,7 @@ import { join } from 'path';
 import themes from '../../Themes';
 import getAppSettings from './getAppSettings';
 
-const { extensions } = getAppSettings();
+const { extensions = [] } = getAppSettings();
 
 /**
  * Returns the node modules paths to all extensions.
