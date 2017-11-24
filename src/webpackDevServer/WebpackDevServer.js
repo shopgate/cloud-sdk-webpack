@@ -5,12 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { resolve } from 'path';
 import webpack from 'webpack';
 import WpDevServer from 'webpack-dev-server';
 import merge from 'webpack-merge';
 import WebpackConfigurator from 'Src/webpackConfig/WebpackConfigurator';
 import themes from 'Src/Themes';
 import { logHelper } from 'Src/logger';
+import { isDev } from 'Src/environment';
 
 /**
  * The WebpackDevServer class.
@@ -38,18 +40,16 @@ class WebpackDevServer {
 
       logHelper.logLogoStart();
 
+      this.webpackConfig = this.configurator.getConfig();
+      this.serverConfig = this.configurator.getServerConfig();
+
       /**
        * At this point we need to merge the modules resolving paths with our default webpack config.
        * This is because if it is not included in a custom webpack config then the modules will
        * not be resolved from the correct places.
        */
-      this.webpackConfig = merge(this.configurator.getConfig(), {
-        resolve: {
-          modules: require('../webpackConfig/webpack.common').default.resolve.modules, // eslint-disable-line global-require
-        },
-      });
-
-      this.serverConfig = this.configurator.getServerConfig();
+      this.injectModuleResolves();
+      this.extendEntry();
 
       WpDevServer.addDevServerEntrypoints(this.webpackConfig, this.serverConfig);
 
@@ -60,6 +60,55 @@ class WebpackDevServer {
 
       this.server.listen(port, host);
     });
+  }
+
+  /**
+   * Injects the modules resolves from the common webpack configuration.
+   */
+  injectModuleResolves() {
+    this.webpackConfig = merge(this.webpackConfig, {
+      resolve: {
+        // eslint-disable-next-line global-require
+        modules: require('../webpackConfig/webpack.common').default.resolve.modules,
+      },
+    });
+  }
+
+  /**
+   * Extends the app entry with the react hot loader in development.
+   */
+  extendEntry() {
+    // This is for development only.
+    if (!isDev) {
+      return;
+    }
+
+    // The resolved react-hot-loader path.
+    const hotLoaderPatch = resolve(process.env.SDK_PATH, 'node_modules', 'react-hot-loader/patch');
+    // The current configurations entry.
+    const entry = this.getEntry();
+
+    // Check if the react-hot-loader is already implemented.
+    if (entry.includes(hotLoaderPatch)) {
+      return;
+    }
+
+    // Inject the react hot loader.
+    // IMPORTANT: Needs to be on the first position!
+    this.webpackConfig.entry.app = [
+      hotLoaderPatch,
+      ...entry,
+    ];
+  }
+
+  /**
+   * Returns the app entry and sanitizes it.
+   * @return {Array}
+   */
+  getEntry() {
+    return Array.isArray(this.webpackConfig.entry.app)
+      ? this.webpackConfig.entry.app
+      : [this.webpackConfig.entry.app];
   }
 }
 

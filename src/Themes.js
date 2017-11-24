@@ -105,7 +105,7 @@ class Themes {
         type: 'list',
         name: 'theme',
         message: 'Please choose a theme to use',
-        choices: this.getThemes().map(theme => theme.name),
+        choices: themes,
       },
     ];
 
