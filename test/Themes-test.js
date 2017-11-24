@@ -9,29 +9,35 @@ import assert from 'assert';
 import sinon from 'sinon';
 import { join } from 'path';
 
-process.env.PWD = join(process.cwd(), 'test/mock');
+let projectDirectory = join(process.cwd(), 'test/mock');
 process.env.theme = 'theme1';
 
+const cwd = process.cwd();
+process.chdir(projectDirectory);
+
 const themes = require('Src/Themes').default;
+let mockThemes;
 
 const logger = {
   plain: sinon.spy(),
 };
 
-const mockThemes = [
-  {
-    name: 'theme1',
-    path: join(process.env.PWD, './themes/theme1'),
-    config: join(process.env.PWD, './themes/theme1/webpack.config.js'),
-  },
-  {
-    name: 'theme2',
-    path: join(process.env.PWD, './themes/theme2'),
-    config: join(process.env.PWD, '../../src/webpackConfig/webpack.dev.js'),
-  },
-];
-
 describe('Themes', () => {
+  before(() => {
+    mockThemes = [
+      {
+        name: 'theme1',
+        path: join(projectDirectory, './themes/theme1'),
+        config: join(projectDirectory, './themes/theme1/webpack.config.js'),
+      },
+      {
+        name: 'theme2',
+        path: join(projectDirectory, './themes/theme2'),
+        config: join(projectDirectory, '../../src/webpackConfig/webpack.dev.js'),
+      },
+    ];
+  });
+
   afterEach(() => {
     logger.plain.reset();
   });
@@ -52,3 +58,5 @@ describe('Themes', () => {
     assert.equal(mockThemes[0].name, currentTheme.name);
   });
 });
+
+process.chdir(cwd);
