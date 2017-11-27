@@ -24,6 +24,7 @@ class WebpackConfigurator {
       host: process.env.optionsHost,
       port: process.env.optionsPort,
       progress: true,
+      historyApiFallback: true,
       stats: {
         colors: true,
       },
@@ -64,7 +65,7 @@ class WebpackConfigurator {
     try {
       // eslint-disable-next-line global-require, import/no-dynamic-require
       const config = require(this.configPath);
-      // Check if comming from default export or module.exports
+      // Check if coming from default export or module.exports
       this.config = config.default ? config.default : config;
     } catch (error) {
       throw error;

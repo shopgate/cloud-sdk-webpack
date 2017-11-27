@@ -7,6 +7,7 @@
 
 import { existsSync, lstatSync, readdirSync } from 'fs';
 import { join, resolve } from 'path';
+import inquirer from 'inquirer';
 import { isProd } from './environment';
 
 /**
@@ -19,7 +20,22 @@ class Themes {
   constructor() {
     this.currentTheme = null;
     this.themes = this.findThemes();
-    this.setCurrentTheme();
+  }
+
+  /**
+   * Initializes the themes.
+   * @param {Function} callback Called when init is done.
+   */
+  init(callback) {
+    if (process.env.theme === 'undefined') {
+      this.requestThemeOption(() => {
+        this.setCurrentTheme();
+        callback();
+      });
+    } else {
+      this.setCurrentTheme();
+      callback();
+    }
   }
 
   /**
@@ -69,6 +85,35 @@ class Themes {
   setCurrentTheme() {
     this.currentTheme = this.themes.filter(theme => process.env.theme === theme.name)[0];
     return this;
+  }
+
+  /**
+   * Inquires a theme selection if not theme was set as an option.
+   * @param {Function} callback Called when the inquery is finished.
+   */
+  requestThemeOption(callback) {
+    const themes = this.getThemes().map(theme => theme.name);
+
+    if (themes.length === 1) {
+      process.env.theme = themes[0];
+      callback();
+      return;
+    }
+
+    const questions = [
+      {
+        type: 'list',
+        name: 'theme',
+        message: 'Please choose a theme to use',
+        choices: themes,
+      },
+    ];
+
+    inquirer.prompt(questions)
+      .then((answers) => {
+        process.env.theme = answers.theme;
+        callback();
+      });
   }
 
   /**
