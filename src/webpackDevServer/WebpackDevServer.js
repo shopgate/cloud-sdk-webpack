@@ -63,7 +63,7 @@ class WebpackDevServer {
   }
 
   /**
-   * Injects the modules resolves from the common webpack configuration.
+   * Injects the module resolve paths from the common webpack configuration.
    */
   injectModuleResolves() {
     this.webpackConfig = merge(this.webpackConfig, {
@@ -85,7 +85,7 @@ class WebpackDevServer {
 
     // The resolved react-hot-loader path.
     const hotLoaderPatch = resolve(process.env.SDK_PATH, 'node_modules', 'react-hot-loader/patch');
-    // The current configurations entry.
+    // The current entry configuration.
     const entry = this.getEntry();
 
     // Check if the react-hot-loader is already implemented.
@@ -94,7 +94,7 @@ class WebpackDevServer {
     }
 
     // Inject the react hot loader.
-    // IMPORTANT: Needs to be on the first position!
+    // IMPORTANT: Needs to be the first entry in the array.
     this.webpackConfig.entry.app = [
       hotLoaderPatch,
       ...entry,
