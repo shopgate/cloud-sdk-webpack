@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { existsSync } from 'fs';
 import requireUncached from 'require-uncached';
 import themes from '../../Themes';
 
@@ -14,7 +15,22 @@ import themes from '../../Themes';
  */
 const getComponentsSettings = () => {
   try {
-    return requireUncached(`${themes.getPath()}/config/components.json`);
+    const themePath = themes.getPath();
+    const themeWidgets = `${themePath}/widgets`;
+    const themeConfig = `${themeWidgets}/widgets.json`;
+
+    const defaultConfig = requireUncached(`${themePath}/config/components.json`);
+
+    const configExists = (existsSync(themeWidgets) && existsSync(themeConfig));
+    const config = configExists ? requireUncached(themeConfig) : {};
+
+    return {
+      ...defaultConfig,
+      widgets: {
+        ...defaultConfig.widgets,
+        ...config,
+      },
+    };
   } catch (e) {
     return {};
   }
