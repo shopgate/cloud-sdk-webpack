@@ -22,10 +22,16 @@ const LOCAL_NODE_MODULES = resolve(__dirname, '..', '..', NODE_MODULES);
 const SDK_NODE_MODULES = resolve(process.env.SDK_PATH, NODE_MODULES);
 
 const stringReplacementLoader = StringReplacePlugin.replace({
-  replacements: [{
-    pattern: /__PROJECT_PATH__/g,
-    replacement: () => JSON.stringify(THEME_PATH),
-  }],
+  replacements: [
+    {
+      pattern: /__PROJECT_PATH__/g,
+      replacement: () => JSON.stringify(THEME_PATH),
+    },
+    {
+      pattern: /__EXTENSIONS_PATH__/g,
+      replacement: () => JSON.stringify(resolve(THEME_PATH, '..', '..', 'extensions')),
+    },
+  ],
 });
 
 export default {
