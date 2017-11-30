@@ -2,14 +2,16 @@ language: node_js
 node_js: node
 script: npm run cover
 after_script: cat ./build/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-notifications:
-  email: false
-  slack:
-    template:
-      - "%{repository_slug} @ %{branch} - %{message}"
-      - "Commit: \"%{commit_subject}\" by %{author}"
-      - "Build: %{build_url}"
-    secure: OMklprbE+MIfO80LokT6ynurGGkMaHYNAb6q2u0iD9FQPRSGPhkZnceGUjAMtvSpZvJvWCJTpb8aOSfLrqdITAtUy944e0vQNPxwVlJc1iVx6qiWsboUWxHTncwWw4bkutHuTw0fplE8NbCqECCBEYVDeHCpBB4T8+ePvJ5WIVf2LP9gWw77yk3JmYno0iZbr2r4gGwRLqSFpHsK8DeOEa7Basv/oO+PYdQnmh4aKOPicnWkD4amvK8+fiaDASttPOrNCvdr05okXa0KUgmzU4mWp5y+ShBUnz53YSm8iibXB6DOD8xvREG9V3vESm7tBnUFRzzMw0Y0bjUnqFcIgR2MExpr78XJKpFFLzYh6J6iD8FbRmVseW3dOmZpu8/A+MW/yQ2/FLDIGy3c4ev0h/Km7ThCmXTddWcJDEnKrthpuPZZa2dGyc6/iHVqb4zq781kW9AoMSSlfldzH+Xej4grV8SYhD5mRT9M6OuNJ88SMk+H+0WkxRKY4V/pgf1Z+i5iFIRJ4lRu3QI88S6LZ5/c07z1wqp14mSqbbfgFp0WSh0+6PM8qmGB5a7oELCB2p3YIctbObdr570swGNwaJ/6RlqkX3yCC363EkvNH8P7B/yqUBqzVvxlzY+0MrPAww3lapt/qSQRpZhVWlTyvsKvGxvTJvhFpWEDeGiaZos=
 branches:
   only:
   - master
+notifications:
+  email: false
+  slack:
+    on_success: change
+    on_failure: change
+    template:
+      - "%{repository_slug}"
+      - "<%{build_url}|#%{build_number}> - %{message}"
+      - "Commit: \"%{commit_subject}\" by %{author}"
+    secure: OMklprbE+MIfO80LokT6ynurGGkMaHYNAb6q2u0iD9FQPRSGPhkZnceGUjAMtvSpZvJvWCJTpb8aOSfLrqdITAtUy944e0vQNPxwVlJc1iVx6qiWsboUWxHTncwWw4bkutHuTw0fplE8NbCqECCBEYVDeHCpBB4T8+ePvJ5WIVf2LP9gWw77yk3JmYno0iZbr2r4gGwRLqSFpHsK8DeOEa7Basv/oO+PYdQnmh4aKOPicnWkD4amvK8+fiaDASttPOrNCvdr05okXa0KUgmzU4mWp5y+ShBUnz53YSm8iibXB6DOD8xvREG9V3vESm7tBnUFRzzMw0Y0bjUnqFcIgR2MExpr78XJKpFFLzYh6J6iD8FbRmVseW3dOmZpu8/A+MW/yQ2/FLDIGy3c4ev0h/Km7ThCmXTddWcJDEnKrthpuPZZa2dGyc6/iHVqb4zq781kW9AoMSSlfldzH+Xej4grV8SYhD5mRT9M6OuNJ88SMk+H+0WkxRKY4V/pgf1Z+i5iFIRJ4lRu3QI88S6LZ5/c07z1wqp14mSqbbfgFp0WSh0+6PM8qmGB5a7oELCB2p3YIctbObdr570swGNwaJ/6RlqkX3yCC363EkvNH8P7B/yqUBqzVvxlzY+0MrPAww3lapt/qSQRpZhVWlTyvsKvGxvTJvhFpWEDeGiaZos=
