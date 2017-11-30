@@ -105,9 +105,11 @@ export default {
     extensions: ['.json', '.js', '.jsx'],
     modules: [
       resolve(THEME_PATH, NODE_MODULES),
+      resolve(THEME_PATH, 'widgets'),
+      resolve(THEME_PATH, '..', '..', 'extensions'),
+      ...getExtensionsNodeModulesPaths(),
       resolve(SDK_NODE_MODULES),
       resolve(LOCAL_NODE_MODULES),
-      ...getExtensionsNodeModulesPaths(),
     ],
   },
   performance: {

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { join } from 'path';
+import { join, resolve } from 'path';
 import themes from '../../Themes';
 import getAppSettings from './getAppSettings';
 
@@ -16,7 +16,10 @@ const { extensions = [] } = getAppSettings();
  * @return {Array}
  */
 const getExtensionsNodeModulePaths = () => (
-  extensions.map(name => join(themes.getPath(), 'extensions', name, 'frontend', 'node_modules'))
+  extensions.map((name) => {
+    const extensionPath = resolve(themes.getPath(), '..', '..', 'extensions');
+    return join(extensionPath, name, 'frontend', 'node_modules');
+  })
 );
 
 export default getExtensionsNodeModulePaths;
