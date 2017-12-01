@@ -36,7 +36,7 @@ const createWidgetsIndex = () => {
     );
 
     // Add the component to the imports.
-    imports.push(`import ${widgetVariableName} from './${widgetPath}';`);
+    imports.push(`import ${widgetVariableName} from '${widgetPath}';`);
     // Add the component to the exported object.
     exports.push(`  '${widgetId}': ${widgetVariableName},`);
   });
