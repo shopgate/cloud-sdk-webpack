@@ -9,6 +9,7 @@ import webpack from 'webpack';
 import rimraf from 'rimraf';
 import WebpackConfigurator from 'Src/webpackConfig/WebpackConfigurator';
 import themes from 'Src/Themes';
+import { createWidgetsIndex, createTrackingIndex } from 'Src/webpackConfig/helpers/indexes';
 import logger, { logHelper } from 'Src/logger';
 
 /**
@@ -23,32 +24,31 @@ class WebpackProcess {
     this.webpackConfig = null;
     this.compiler = null;
     this.logger = logger;
-
-    this.init();
-  }
-
-  /**
-   * Sets up the process environment.
-   */
-  init() {
-    this.configurator
-      .setConfigPath(themes.getConfig())
-      .loadThemeConfig();
-
-    this.webpackConfig = this.configurator.getConfig();
-    this.compiler = webpack(this.webpackConfig);
   }
 
   /**
    * Starts the Webpack compiler.
    */
   start() {
-    // Log startup logo.
-    logHelper.logLogoBuild();
-    // Clear previous build.
-    rimraf(this.webpackConfig.output.path, () => {
-      // Run webpack.
-      this.compiler.run(this.handleOutput);
+    themes.init(() => {
+      // Log startup logo.
+      logHelper.logLogoBuild();
+
+      createWidgetsIndex();
+      createTrackingIndex();
+
+      this.configurator
+        .setConfigPath(themes.getConfig())
+        .loadThemeConfig();
+
+      this.webpackConfig = this.configurator.getConfig();
+      this.compiler = webpack(this.webpackConfig);
+
+      // Clear previous build.
+      rimraf(this.webpackConfig.output.path, () => {
+        // Run webpack.
+        this.compiler.run(this.handleOutput.bind(this));
+      });
     });
   }
 
