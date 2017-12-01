@@ -12,6 +12,14 @@ import getAppSettings from './helpers/getAppSettings';
 import getExtensionsNodeModulesPaths from './helpers/getExtensionsNodeModulesPaths';
 import { isDev } from '../environment';
 import themes from '../Themes';
+import getComponentsSettings from './helpers/getComponentsSettings';
+
+const widgetConfig = getComponentsSettings().widgets;
+const widgetEntries = {};
+
+Object.keys(widgetConfig).forEach((widget) => {
+  widgetEntries[widget] = widgetConfig[widget].path;
+});
 
 const { language } = getAppSettings();
 
@@ -52,6 +60,7 @@ export default {
       'react-dom',
       resolve(__dirname, './helpers/polyfill'),
     ],
+    ...widgetEntries,
   },
   externals: {
     cheerio: 'window',
