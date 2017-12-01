@@ -12,14 +12,6 @@ import getAppSettings from './helpers/getAppSettings';
 import getExtensionsNodeModulesPaths from './helpers/getExtensionsNodeModulesPaths';
 import { isDev } from '../environment';
 import themes from '../Themes';
-import getComponentsSettings from './helpers/getComponentsSettings';
-
-const widgetConfig = getComponentsSettings().widgets;
-const widgetEntries = {};
-
-Object.keys(widgetConfig).forEach((widget) => {
-  widgetEntries[widget] = widgetConfig[widget].path;
-});
 
 const { language } = getAppSettings();
 
@@ -32,7 +24,7 @@ const SDK_NODE_MODULES = resolve(process.env.SDK_PATH, NODE_MODULES);
 const stringReplacementLoader = StringReplacePlugin.replace({
   replacements: [
     {
-      pattern: /__PROJECT_PATH__/g,
+      pattern: /__THEME_PATH__/g,
       replacement: () => JSON.stringify(THEME_PATH),
     },
     {
@@ -60,7 +52,6 @@ export default {
       'react-dom',
       resolve(__dirname, './helpers/polyfill'),
     ],
-    ...widgetEntries,
   },
   externals: {
     cheerio: 'window',
