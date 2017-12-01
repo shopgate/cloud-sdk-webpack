@@ -10,6 +10,7 @@ import webpack from 'webpack';
 import WpDevServer from 'webpack-dev-server';
 import merge from 'webpack-merge';
 import WebpackConfigurator from 'Src/webpackConfig/WebpackConfigurator';
+import createWidgetsIndex from 'Src/webpackConfig/helpers/createWidgetsIndex';
 import themes from 'Src/Themes';
 import { logHelper } from 'Src/logger';
 import { isDev } from 'Src/environment';
@@ -34,6 +35,8 @@ class WebpackDevServer {
    */
   start() {
     themes.init(() => {
+      createWidgetsIndex();
+
       this.configurator
         .setConfigPath(themes.getConfig())
         .loadThemeConfig();

@@ -76,6 +76,7 @@
     "inquirer": "^4.0.0",
     "intl": "^1.2.5",
     "json-loader": "^0.5.7",
+    "lodash": "^4.17.4",
     "offline-plugin": "^4.8.4",
     "progress-bar-webpack-plugin": "^1.10.0",
     "react": "^15.6.2",
