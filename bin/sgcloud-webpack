@@ -11,8 +11,6 @@ if (argv.theme) {
   process.env.theme = argv.theme;
 }
 
-process.env.SDK_PATH = resolve(__dirname, '..');
-
 // Set the environment to production.
 process.env.NODE_ENV = ENV_KEY_PRODUCTION;
 

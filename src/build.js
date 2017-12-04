@@ -9,7 +9,8 @@ import { fork } from 'child_process';
 import { join } from 'path';
 
 try {
-  fork(join(__dirname, './webpack'));
+  const webpackProcess = fork(join(__dirname, './webpack'));
+  webpackProcess.on('exit', code => process.exit(code));
 } catch (error) {
   throw error;
 }

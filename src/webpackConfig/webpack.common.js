@@ -87,10 +87,7 @@ export default {
       },
       {
         test: /\.(js|jsx)$/,
-        exclude: [
-          resolve(process.env.SDK_PATH),
-          resolve(process.env.SDK_PATH, 'bin'),
-        ],
+        include: [resolve(process.env.SDK_PATH, 'src')],
         use: [
           stringReplacementLoader,
           resolve(SDK_NODE_MODULES, 'cache-loader'),
