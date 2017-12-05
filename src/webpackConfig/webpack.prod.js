@@ -10,21 +10,23 @@ import merge from 'webpack-merge';
 import themes from '../Themes';
 import common from './webpack.common';
 import plugins from './plugins/prod';
-
-const THEME_PATH = themes.getPath();
+import loaders from './loaders/prod';
 
 export default merge(common, {
   entry: {
     app: [
-      resolve(THEME_PATH, 'index.jsx'),
+      resolve(themes.getPath(), 'index.jsx'),
       resolve(__dirname, './modules/cache'),
     ],
+  },
+  module: {
+    rules: loaders,
   },
   devtool: 'cheap-module-source-map',
   output: {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
-    path: resolve(THEME_PATH, 'public'),
+    path: resolve(themes.getPath(), 'public'),
     publicPath: './',
   },
   plugins,

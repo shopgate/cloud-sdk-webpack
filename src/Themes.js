@@ -59,7 +59,13 @@ class Themes {
    * @return {string}
    */
   getName() {
-    return this.getCurrentTheme().name;
+    const current = this.getCurrentTheme();
+
+    if (!current || !current.name) {
+      return process.env.theme;
+    }
+
+    return current.name;
   }
 
   /**

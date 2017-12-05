@@ -5,13 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { resolve } from 'path';
+import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import camelCase from 'lodash/camelCase';
 import upperFirst from 'lodash/upperFirst';
 import { isDev } from 'Src/environment';
 import themes from 'Src/Themes';
-import { resolve } from 'path';
-import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import logger from 'Src/logger';
+import { EXTENSIONS_PATH } from '../variables';
 import getComponentsSettings from './getComponentsSettings';
 
 /**
@@ -27,7 +28,10 @@ const createIndex = (config) => {
     const component = config[componentId];
     const componentPath = isDev ? component.path.replace('/dist/', '/src/') : component.path;
 
-    if (!existsSync(resolve(process.env.PWD, 'extensions', componentPath))) {
+    const existsInExtensions = existsSync(resolve(EXTENSIONS_PATH, componentPath));
+    const existsInWidgets = existsSync(resolve(themes.getPath(), 'widgets', componentPath));
+
+    if (!existsInExtensions && !existsInWidgets) {
       return;
     }
 

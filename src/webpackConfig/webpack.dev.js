@@ -8,23 +8,29 @@
 import { resolve } from 'path';
 import merge from 'webpack-merge';
 import themes from '../Themes';
+import { NODE_MODULES } from './variables';
 import common from './webpack.common';
 import plugins from './plugins/dev';
+import loaders from './loaders/dev';
+import getDevConfig from './helpers/getDevConfig';
 
-const THEME_PATH = themes.getPath();
+const { sourceMap } = getDevConfig();
 
 export default merge(common, {
   entry: {
     app: [
-      resolve(process.env.SDK_PATH, 'node_modules', 'react-hot-loader/patch'),
+      resolve(NODE_MODULES, 'react-hot-loader/patch'),
       './index.jsx',
     ],
   },
-  devtool: 'cheap-module-eval-source-map',
+  module: {
+    rules: loaders,
+  },
+  devtool: sourceMap,
   output: {
     filename: '[name].js',
     chunkFilename: '[name].[chunkhash].js',
-    path: resolve(THEME_PATH, 'public'),
+    path: resolve(themes.getPath(), 'public'),
     publicPath: '/',
   },
   plugins,

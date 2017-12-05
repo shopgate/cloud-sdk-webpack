@@ -22,16 +22,13 @@ const appConfig = getAppSettings();
 const componentsConfig = getComponentsSettings();
 const { ip, apiPort } = getDevConfig();
 
-const THEME_PATH = themes.getPath();
-const THEME_NAME = themes.getName();
 const PUBLIC_FOLDER = 'public';
-const LANG = convertLanguageToISO(appConfig.language);
 
 const plugins = [
   new StringReplacePlugin(),
   new HTMLWebpackPlugin({
-    title: appConfig.shopName || THEME_NAME,
-    filename: resolve(THEME_PATH, PUBLIC_FOLDER, 'index.html'),
+    title: appConfig.shopName || themes.getName(),
+    filename: resolve(themes.getPath(), PUBLIC_FOLDER, 'index.html'),
     template: resolve(__dirname, '../templates/index.ejs'),
     inject: false,
     cache: false,
@@ -42,7 +39,7 @@ const plugins = [
       NODE_ENV: JSON.stringify(ENV),
       APP_CONFIG: JSON.stringify(appConfig),
       COMPONENTS_CONFIG: JSON.stringify(componentsConfig),
-      LANG: JSON.stringify(LANG),
+      LANG: JSON.stringify(convertLanguageToISO(appConfig.language)),
       IP: JSON.stringify(ip),
       PORT: JSON.stringify(apiPort),
     },
@@ -50,9 +47,9 @@ const plugins = [
   new webpack.LoaderOptionsPlugin({
     debug: isDev,
     options: {
-      context: THEME_PATH,
+      context: themes.getPath(),
       output: {
-        path: resolve(THEME_PATH, PUBLIC_FOLDER),
+        path: resolve(themes.getPath(), PUBLIC_FOLDER),
       },
     },
   }),
