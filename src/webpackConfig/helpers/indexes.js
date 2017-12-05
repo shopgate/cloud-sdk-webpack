@@ -27,6 +27,10 @@ const createIndex = (config) => {
     const component = config[componentId];
     const componentPath = isDev ? component.path.replace('/dist/', '/src/') : component.path;
 
+    if (!existsSync(resolve(process.env.PWD, 'extensions', componentPath))) {
+      return;
+    }
+
     /**
      * The variable name to be used in import and export statement.
      * @type {string}

@@ -27,6 +27,7 @@
     "sgcloud-webpack": "./bin/sgcloud-webpack"
   },
   "scripts": {
+    "start": "nodemon --exec \"npm run build\"",
     "test": "mocha",
     "cover": "rimraf ./build ./.nyc_output && nyc mocha",
     "lint": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js .",
@@ -58,6 +59,7 @@
     "jsdom-global": "^3.0.2",
     "lint-staged": "^5.0.0",
     "mocha": "^4.0.1",
+    "nodemon": "^1.12.4",
     "nyc": "^11.3.0",
     "pre-commit": "^1.2.2",
     "rimraf": "^2.6.2",
@@ -99,6 +101,12 @@
     "lint-staged",
     "build"
   ],
+  "nodemonConfig": {
+    "ignore": [
+      "test/*",
+      "lib/*"
+    ]
+  },
   "nyc": {
     "include": [
       "src/**/*.js"
