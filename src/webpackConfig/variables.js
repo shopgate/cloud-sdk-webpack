@@ -8,5 +8,5 @@
 import { resolve } from 'path';
 import getNodeModulesPath from './helpers/getNodeModulesPath';
 
-export const EXTENSIONS_PATH = resolve(process.env.APP_PATH, 'extensions');
+export const EXTENSIONS_PATH = resolve(process.cwd(), 'extensions');
 export const NODE_MODULES = getNodeModulesPath();
