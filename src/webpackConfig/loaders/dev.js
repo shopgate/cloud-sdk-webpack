@@ -29,6 +29,7 @@ export default [
           comments: true,
           sourceRoot: themes.getPath(),
           cacheDirectory: true,
+          extends: resolve(themes.getPath(), '.babelrc'),
         },
       },
     ],
