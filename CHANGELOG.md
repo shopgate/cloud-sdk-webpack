@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.5.6
+
+* Added `viewport-fit` viewport meta.
+
 ## v1.5.5
 
 * Extensions use the `.babelrc` of the theme by default!
