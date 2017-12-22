@@ -89,6 +89,7 @@ class Themes {
    * @return {Themes}
    */
   setCurrentTheme() {
+    // eslint-disable-next-line prefer-destructuring
     this.currentTheme = this.themes.filter(theme => process.env.theme === theme.name)[0];
     return this;
   }
@@ -101,6 +102,7 @@ class Themes {
     const themes = this.getThemes().map(theme => theme.name);
 
     if (themes.length === 1) {
+      // eslint-disable-next-line prefer-destructuring
       process.env.theme = themes[0];
       callback();
       return;
