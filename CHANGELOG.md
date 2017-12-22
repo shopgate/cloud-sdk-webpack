@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.6.0
+
+* Added support for react@^16.2.0
+
 ## v1.5.6
 
 * Added `viewport-fit` viewport meta.
@@ -8,4 +12,6 @@
 
 * Extensions use the `.babelrc` of the theme by default!
 
-## v1.0.0 - Initial Release
+## v1.0.0
+
+* Initial release

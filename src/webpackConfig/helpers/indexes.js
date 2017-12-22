@@ -39,9 +39,8 @@ const createIndex = (config) => {
      * The variable name to be used in import and export statement.
      * @type {string}
      */
-    const componentVariableName = upperFirst(
-      camelCase(componentId.replace(/@/g, '').replace(/\//g, '-'))
-    );
+    const componentVariableName = upperFirst(camelCase(componentId
+      .replace(/@/g, '').replace(/\//g, '-')));
 
     // Add the component to the imports.
     imports.push(`import ${componentVariableName} from '${componentPath}';`);
