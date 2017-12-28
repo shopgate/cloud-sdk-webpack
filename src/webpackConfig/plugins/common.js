@@ -39,6 +39,7 @@ const plugins = [
       NODE_ENV: JSON.stringify(ENV),
       APP_CONFIG: JSON.stringify(appConfig),
       COMPONENTS_CONFIG: JSON.stringify(componentsConfig),
+      THEME: JSON.stringify(themes.getName()),
       LANG: JSON.stringify(convertLanguageToISO(appConfig.language)),
       IP: JSON.stringify(ip),
       PORT: JSON.stringify(apiPort),
