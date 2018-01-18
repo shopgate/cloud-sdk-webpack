@@ -8,7 +8,8 @@
 import { existsSync, lstatSync, readdirSync } from 'fs';
 import { join, resolve } from 'path';
 import inquirer from 'inquirer';
-import { isProd } from './environment';
+import { isProd } from 'Src/environment';
+import event, { THEME_IS_SET } from 'Src/event';
 
 /**
  * The Themes class.
@@ -24,17 +25,16 @@ class Themes {
 
   /**
    * Initializes the themes.
-   * @param {Function} callback Called when init is done.
    */
-  init(callback) {
+  init() {
     if (process.env.theme === 'undefined') {
       this.requestThemeOption(() => {
         this.setCurrentTheme();
-        callback();
+        event.emit(THEME_IS_SET, this.getPath());
       });
     } else {
       this.setCurrentTheme();
-      callback();
+      event.emit(THEME_IS_SET, this.getPath());
     }
   }
 
