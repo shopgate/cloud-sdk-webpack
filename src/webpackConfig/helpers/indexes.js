@@ -15,6 +15,8 @@ import logger from 'Src/logger';
 import { EXTENSIONS_PATH } from '../variables';
 import getComponentsSettings from './getComponentsSettings';
 
+const EXTENSIONS_FOLDER = 'extensions';
+
 /**
  * Creates an index.
  * @param {Object} config The config to parse.
@@ -60,7 +62,7 @@ const createIndex = (config) => {
 export const createWidgetsIndex = () => {
   const { widgets } = getComponentsSettings();
   const indexString = createIndex(widgets);
-  const extensionsFolder = resolve(themes.getPath(), 'extensions');
+  const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
 
   if (!existsSync(extensionsFolder)) {
     mkdirSync(extensionsFolder);
@@ -78,7 +80,7 @@ export const createWidgetsIndex = () => {
 export const createTrackingIndex = () => {
   const { tracking } = getComponentsSettings();
   const indexString = createIndex(tracking);
-  const extensionsFolder = resolve(themes.getPath(), 'extensions');
+  const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
 
   if (!existsSync(extensionsFolder)) {
     mkdirSync(extensionsFolder);
@@ -86,6 +88,24 @@ export const createTrackingIndex = () => {
 
   logger.log('  Indexing trackers ...\n');
   const indexFile = resolve(extensionsFolder, 'tracking.js');
+
+  writeFileSync(indexFile, indexString, { flag: 'w+' });
+};
+
+/**
+ * Creates the portals index.
+ */
+export const createPortalsIndex = () => {
+  const { portals } = getComponentsSettings();
+  const indexString = createIndex(portals);
+  const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
+
+  if (!existsSync(extensionsFolder)) {
+    mkdirSync(extensionsFolder);
+  }
+
+  logger.log('  Indexing portals ...\n');
+  const indexFile = resolve(extensionsFolder, 'portals.js');
 
   writeFileSync(indexFile, indexString, { flag: 'w+' });
 };
