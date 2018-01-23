@@ -20,11 +20,12 @@ const EXTENSIONS_FOLDER = 'extensions';
 /**
  * Creates an index.
  * @param {Object} config The config to parse.
+ * @param {boolean} [attach=false] Whether to attach the output object to the process.env.
  * @return {string} The index.
  */
-const createIndex = (config) => {
-  const imports = [];
-  const exports = ['export default {'];
+const createIndex = (config, attach = false) => {
+  const imports = attach ? ['import portalsStore from \'@shopgate/pwa-core/classes/Portals\';'] : [];
+  const exports = attach ? ['portalsStore.registerPortals({'] : ['export default {'];
 
   Object.keys(config).forEach((componentId) => {
     const component = config[componentId];
@@ -50,7 +51,7 @@ const createIndex = (config) => {
     exports.push(`  '${componentId}': ${componentVariableName},`);
   });
 
-  exports.push('};');
+  exports.push(attach ? '});' : '};');
 
   const importsString = imports.length ? `${imports.join('\n')}\n\n` : '';
   return `${importsString}${exports.join('\n')}\n`;
@@ -97,7 +98,7 @@ export const createTrackingIndex = () => {
  */
 export const createPortalsIndex = () => {
   const { portals } = getComponentsSettings();
-  const indexString = createIndex(portals);
+  const indexString = createIndex(portals, true, 'PORTALS');
   const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
 
   if (!existsSync(extensionsFolder)) {
