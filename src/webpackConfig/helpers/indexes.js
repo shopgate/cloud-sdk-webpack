@@ -24,8 +24,8 @@ const EXTENSIONS_FOLDER = 'extensions';
  * @return {string} The index.
  */
 const createIndex = (config, attach = false) => {
-  const imports = attach ? ['import portalsStore from \'@shopgate/pwa-core/classes/Portals\';'] : [];
-  const exports = attach ? ['portalsStore.registerPortals({'] : ['export default {'];
+  const imports = attach ? ['import portalCollection from \'@shopgate/pwa-core/classes/PortalCollection\';'] : [];
+  const exports = attach ? ['portalCollection.registerPortals({'] : ['export default {'];
 
   Object.keys(config).forEach((componentId) => {
     const component = config[componentId];
