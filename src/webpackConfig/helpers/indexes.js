@@ -15,14 +15,17 @@ import logger from 'Src/logger';
 import { EXTENSIONS_PATH } from '../variables';
 import getComponentsSettings from './getComponentsSettings';
 
+const EXTENSIONS_FOLDER = 'extensions';
+
 /**
  * Creates an index.
  * @param {Object} config The config to parse.
+ * @param {boolean} [attach=false] Whether to attach the output object to the process.env.
  * @return {string} The index.
  */
-const createIndex = (config) => {
-  const imports = [];
-  const exports = ['export default {'];
+const createIndex = (config, attach = false) => {
+  const imports = attach ? ['import portalCollection from \'@shopgate/pwa-common/helpers/portals/portalCollection\';'] : [];
+  const exports = attach ? ['portalCollection.registerPortals({'] : ['export default {'];
 
   Object.keys(config).forEach((componentId) => {
     const component = config[componentId];
@@ -48,7 +51,7 @@ const createIndex = (config) => {
     exports.push(`  '${componentId}': ${componentVariableName},`);
   });
 
-  exports.push('};');
+  exports.push(attach ? '});' : '};');
 
   const importsString = imports.length ? `${imports.join('\n')}\n\n` : '';
   return `${importsString}${exports.join('\n')}\n`;
@@ -60,7 +63,7 @@ const createIndex = (config) => {
 export const createWidgetsIndex = () => {
   const { widgets } = getComponentsSettings();
   const indexString = createIndex(widgets);
-  const extensionsFolder = resolve(themes.getPath(), 'extensions');
+  const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
 
   if (!existsSync(extensionsFolder)) {
     mkdirSync(extensionsFolder);
@@ -78,7 +81,7 @@ export const createWidgetsIndex = () => {
 export const createTrackingIndex = () => {
   const { tracking } = getComponentsSettings();
   const indexString = createIndex(tracking);
-  const extensionsFolder = resolve(themes.getPath(), 'extensions');
+  const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
 
   if (!existsSync(extensionsFolder)) {
     mkdirSync(extensionsFolder);
@@ -86,6 +89,24 @@ export const createTrackingIndex = () => {
 
   logger.log('  Indexing trackers ...\n');
   const indexFile = resolve(extensionsFolder, 'tracking.js');
+
+  writeFileSync(indexFile, indexString, { flag: 'w+' });
+};
+
+/**
+ * Creates the portals index.
+ */
+export const createPortalsIndex = () => {
+  const { portals } = getComponentsSettings();
+  const indexString = createIndex(portals, true, 'PORTALS');
+  const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
+
+  if (!existsSync(extensionsFolder)) {
+    mkdirSync(extensionsFolder);
+  }
+
+  logger.log('  Indexing portals ...\n');
+  const indexFile = resolve(extensionsFolder, 'portals.js');
 
   writeFileSync(indexFile, indexString, { flag: 'w+' });
 };
