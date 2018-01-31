@@ -1,5 +1,9 @@
 # Changelog
 
+## v.1.8.0
+
+* Added indexing of portal component.
+
 ## v1.6.0
 
 * Added support for react@^16.2.0
