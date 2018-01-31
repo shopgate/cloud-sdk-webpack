@@ -9,7 +9,11 @@ import webpack from 'webpack';
 import rimraf from 'rimraf';
 import WebpackConfigurator from 'Src/webpackConfig/WebpackConfigurator';
 import themes from 'Src/Themes';
-import { createWidgetsIndex, createTrackingIndex } from 'Src/webpackConfig/helpers/indexes';
+import {
+  createWidgetsIndex,
+  createTrackingIndex,
+  createPortalsIndex,
+} from 'Src/webpackConfig/helpers/indexes';
 import logger, { logHelper } from 'Src/logger';
 
 /**
@@ -36,6 +40,7 @@ class WebpackProcess {
 
       createWidgetsIndex();
       createTrackingIndex();
+      createPortalsIndex();
 
       this.configurator
         .setConfigPath(themes.getConfig())
