@@ -26,7 +26,7 @@ class LogHelper {
      * A colored Shopgate Cloud prefix for console outputs.
      * @type {string}
      */
-    this.prefix = `${green('Shopgate')}${blue('Cloud')}`;
+    this.prefix = `${green('Shopgate')}${blue('Connect')}`;
 
     this.logger = console;
   }
@@ -59,7 +59,7 @@ class LogHelper {
    */
   logLogoBuild() {
     this.logger.log(`\n${this.getDivider()}`);
-    this.logger.log(`  ${green('S H O P G A T E')}   ${blue('C L O U D')}`);
+    this.logger.log(`  ${green('S H O P G A T E')}   ${blue('C O N N E C T')}`);
     this.logger.log('  B U I L D\n');
   }
 

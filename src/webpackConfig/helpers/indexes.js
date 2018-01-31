@@ -61,7 +61,7 @@ const createIndex = (config, attach = false) => {
  * Creates the widgets index.
  */
 export const createWidgetsIndex = () => {
-  const { widgets } = getComponentsSettings();
+  const { widgets = {} } = getComponentsSettings();
   const indexString = createIndex(widgets);
   const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
 
@@ -79,7 +79,7 @@ export const createWidgetsIndex = () => {
  * Creates the tracking index.
  */
 export const createTrackingIndex = () => {
-  const { tracking } = getComponentsSettings();
+  const { tracking = {} } = getComponentsSettings();
   const indexString = createIndex(tracking);
   const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
 
@@ -97,7 +97,7 @@ export const createTrackingIndex = () => {
  * Creates the portals index.
  */
 export const createPortalsIndex = () => {
-  const { portals } = getComponentsSettings();
+  const { portals = {} } = getComponentsSettings();
   const indexString = createIndex(portals, true, 'PORTALS');
   const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
 
