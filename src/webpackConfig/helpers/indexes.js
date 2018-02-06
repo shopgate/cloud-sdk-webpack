@@ -5,108 +5,330 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { resolve } from 'path';
+import path from 'path';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import camelCase from 'lodash/camelCase';
+import Promise from 'bluebird';
 import upperFirst from 'lodash/upperFirst';
+import isPlainObject from 'lodash/isPlainObject';
 import { isDev } from 'Src/environment';
 import themes from 'Src/Themes';
 import logger from 'Src/logger';
 import { EXTENSIONS_PATH } from '../variables';
 import getComponentsSettings from './getComponentsSettings';
 
-const EXTENSIONS_FOLDER = 'extensions';
+const defaultFileContent = 'export default {};\n';
+
+/**
+ * Returns the extension folder path.
+ * @return {string}
+ */
+const getExtensionFolderPath = () => path.resolve(themes.getPath(), 'extensions');
+
+/**
+ * Checks if the component exists.
+ * @param {string} componentPath The component path.
+ * @return {boolean}
+ */
+const componentExists = (componentPath) => {
+  const existsInExtensions = existsSync(path.resolve(EXTENSIONS_PATH, componentPath));
+  const existsInWidgets = existsSync(path.resolve(themes.getPath(), 'widgets', componentPath));
+
+  if (!existsInExtensions && !existsInWidgets) {
+    return false;
+  }
+
+  return true;
+};
+
+/**
+ * Returns the generated component variable name.
+ * @param {string} id The component ID.
+ * @return {string}
+ */
+const getVariableName = id => upperFirst(camelCase(id.replace(/@/g, '').replace(/\//g, '-')));
+
+/**
+ * Reads the components config and creates import and export variables.
+ * @param {Object} options The read config options.
+ * @return {Promise}
+ */
+const readConfig = options => new Promise((resolve, reject) => {
+  const {
+    config,
+    importsStart = null,
+    importsEnd = null,
+    exportsStart = 'export default {',
+    exportsEnd = '};',
+    isArray = false,
+  } = options;
+
+  if (!config || !isPlainObject(config)) {
+    return reject(new TypeError(`The supplied component config is not an object! Received '${typeof config}'`));
+  }
+
+  const imports = importsStart ? [importsStart] : []; // Holds the import strings.
+  const exports = [exportsStart]; // Holds the export strings.
+
+  try {
+    Object.keys(config).forEach((id) => {
+      const component = config[id];
+      const componentPath = isDev ? component.path.replace('/dist/', '/src/') : component.path;
+
+      if (!componentExists(componentPath)) {
+        return;
+      }
+
+      const variableName = getVariableName(id);
+
+      imports.push(`import ${variableName} from '${componentPath}';`);
+
+      if (isArray) {
+        exports.push(`  ${variableName},`);
+        return;
+      }
+
+      exports.push(`  '${id}': ${variableName},`);
+    });
+  } catch (e) {
+    return reject(e);
+  }
+
+  if (importsEnd) {
+    imports.push(importsEnd);
+  }
+
+  exports.push(exportsEnd);
+
+  return resolve({
+    imports,
+    exports,
+  });
+});
+
+/**
+ * Validates the extensions input.
+ * @param {Object} input The inout.
+ * @return {Promise}
+ */
+const validateExtensions = input => new Promise((resolve, reject) => {
+  try {
+    const extensionPath = getExtensionFolderPath();
+
+    if (!existsSync(extensionPath)) {
+      mkdirSync(extensionPath);
+    }
+
+    if (!input.imports.length) {
+      return resolve(null);
+    }
+
+    return resolve(input);
+  } catch (e) {
+    return reject(new Error('Extension could not be validated!'));
+  }
+});
+
+/**
+ * Creates the string that is written into the appropriate file.
+ * @param {Object} input The input object.
+ * @return {string}
+ */
+const createStrings = input => new Promise((resolve, reject) => {
+  try {
+    if (!input) {
+      return resolve(null);
+    }
+
+    const importsString = input.imports.length ? `${input.imports.join('\n')}\n\n` : '';
+    const exportsString = input.exports.length ? `${input.exports.join('\n')}\n` : '';
+    const indexString = `${importsString}${exportsString}`;
+
+    return resolve(indexString.length ? indexString : null);
+  } catch (e) {
+    return reject(new Error('Strings could not be created!'));
+  }
+});
+
+/**
+ * Writes to extension file.
+ * @param {Object} options The action object.
+ * @return {Promise}
+ */
+const writeExtensionFile = options => new Promise((resolve, reject) => {
+  try {
+    const {
+      file,
+      input,
+      defaultContent,
+      logNotFound,
+      logEnd,
+    } = options;
+    const filePath = path.resolve(getExtensionFolderPath(), file);
+
+    if (!input) {
+      logger.warn(logNotFound);
+      writeFileSync(filePath, defaultContent, { flag: 'w+' });
+      return resolve();
+    }
+
+    writeFileSync(filePath, input, { flag: 'w+' });
+    logger.log(logEnd);
+    return resolve();
+  } catch (e) {
+    return reject(e);
+  }
+});
 
 /**
  * Creates an index.
- * @param {Object} config The config to parse.
- * @param {boolean} [attach=false] Whether to attach the output object to the process.env.
- * @return {string} The index.
+ * @param {Object} options The indexing options,
+ * @return {Promise}
  */
-const createIndex = (config, attach = false) => {
-  const imports = attach ? ['import portalCollection from \'@shopgate/pwa-common/helpers/portals/portalCollection\';'] : [];
-  const exports = attach ? ['portalCollection.registerPortals({'] : ['export default {'];
+const index = (options) => {
+  const {
+    file,
+    config,
+    logStart = '  Indexing ...',
+    logNotFound = '  No extensions found!',
+    logEnd = '  ... widgets indexed.',
+    defaultContent = defaultFileContent,
+  } = options;
 
-  Object.keys(config).forEach((componentId) => {
-    const component = config[componentId];
-    const componentPath = isDev ? component.path.replace('/dist/', '/src/') : component.path;
+  logger.log(logStart);
 
-    const existsInExtensions = existsSync(resolve(EXTENSIONS_PATH, componentPath));
-    const existsInWidgets = existsSync(resolve(themes.getPath(), 'widgets', componentPath));
-
-    if (!existsInExtensions && !existsInWidgets) {
-      return;
-    }
-
-    /**
-     * The variable name to be used in import and export statement.
-     * @type {string}
-     */
-    const componentVariableName = upperFirst(camelCase(componentId
-      .replace(/@/g, '').replace(/\//g, '-')));
-
-    // Add the component to the imports.
-    imports.push(`import ${componentVariableName} from '${componentPath}';`);
-    // Add the component to the exported object.
-    exports.push(`  '${componentId}': ${componentVariableName},`);
-  });
-
-  exports.push(attach ? '});' : '};');
-
-  const importsString = imports.length ? `${imports.join('\n')}\n\n` : '';
-  return `${importsString}${exports.join('\n')}\n`;
+  return readConfig(config)
+    .then(input => validateExtensions(input))
+    .then(input => createStrings(input))
+    .then(input => writeExtensionFile({
+      input,
+      file,
+      defaultContent,
+      logNotFound,
+      logEnd,
+    }));
 };
 
 /**
- * Creates the widgets index.
+ * Indexes the widgets.
+ * @return {Promise}
  */
-export const createWidgetsIndex = () => {
+const indexWidgets = () => {
   const { widgets = {} } = getComponentsSettings();
-  const indexString = createIndex(widgets);
-  const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
 
-  if (!existsSync(extensionsFolder)) {
-    mkdirSync(extensionsFolder);
-  }
-
-  logger.log('  Indexing widgets ...\n');
-  const indexFile = resolve(extensionsFolder, 'widgets.js');
-
-  writeFileSync(indexFile, indexString, { flag: 'w+' });
+  return index({
+    file: 'widgets.js',
+    config: { config: widgets },
+    logStart: '  Indexing widgets ...',
+    logNotFound: '  No extensions found for \'widgets\'',
+    logEnd: ' ... widgets indexed.',
+  });
 };
 
 /**
- * Creates the tracking index.
+ * Indexes the tracking.
+ * @return {Promise}
  */
-export const createTrackingIndex = () => {
+const indexTracking = () => {
   const { tracking = {} } = getComponentsSettings();
-  const indexString = createIndex(tracking);
-  const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
 
-  if (!existsSync(extensionsFolder)) {
-    mkdirSync(extensionsFolder);
-  }
-
-  logger.log('  Indexing trackers ...\n');
-  const indexFile = resolve(extensionsFolder, 'tracking.js');
-
-  writeFileSync(indexFile, indexString, { flag: 'w+' });
+  return index({
+    file: 'tracking.js',
+    config: { config: tracking },
+    logStart: '  Indexing trackers ...',
+    logNotFound: '  No extensions found for \'tracking\'',
+    logEnd: ' ... trackers indexed.',
+  });
 };
 
 /**
- * Creates the portals index.
+ * Indexes the portals.
+ * @return {Promise}
  */
-export const createPortalsIndex = () => {
+const indexPortals = () => {
   const { portals = {} } = getComponentsSettings();
-  const indexString = createIndex(portals, true, 'PORTALS');
-  const extensionsFolder = resolve(themes.getPath(), EXTENSIONS_FOLDER);
 
-  if (!existsSync(extensionsFolder)) {
-    mkdirSync(extensionsFolder);
-  }
-
-  logger.log('  Indexing portals ...\n');
-  const indexFile = resolve(extensionsFolder, 'portals.js');
-
-  writeFileSync(indexFile, indexString, { flag: 'w+' });
+  return index({
+    file: 'portals.js',
+    config: {
+      config: portals,
+      importsStart: 'import portalCollection from \'@shopgate/pwa-common/helpers/portals/portalCollection\';',
+      exportsStart: 'portalCollection.registerPortals({',
+      exportsEnd: '});',
+    },
+    logStart: '  Indexing portals ...',
+    logNotFound: '  No extensions found for \'portals\'',
+    logEnd: ' ... portals indexed.',
+  });
 };
+
+/**
+ * Indexes the reducers from extensions.
+ * @return {Promise}
+ */
+const indexReducers = () => {
+  const { reducers = {} } = getComponentsSettings();
+
+  return index({
+    file: 'reducers.js',
+    config: { config: reducers },
+    logStart: '  Indexing reducers ...',
+    logNotFound: '  No extensions found for \'reducers\'',
+    logEnd: ' ... reducers indexed.',
+    defaultContent: 'export default null;\n',
+  });
+};
+
+/**
+ * Indexes the RxJS subscriptions from extensions.
+ * @return {Promise}
+ */
+const indexSubscribers = () => {
+  const { subscribers = {} } = getComponentsSettings();
+
+  return index({
+    file: 'subscribers.js',
+    config: {
+      config: subscribers,
+      exportsStart: 'export default [',
+      exportsEnd: '];',
+      isArray: true,
+    },
+    logStart: '  Indexing subscribers ...',
+    logNotFound: '  No extensions found for \'subscribers\'',
+    logEnd: ' ... subscribers indexed.',
+    defaultContent: 'export default [];\n',
+  });
+};
+
+/**
+ * Indexes the translations from extensions.
+ * @return {Promise}
+ */
+const indexTranslations = () => {
+  const { translations = {} } = getComponentsSettings();
+
+  return index({
+    file: 'translations.js',
+    config: { config: translations },
+    logStart: '  Indexing translations ...',
+    logNotFound: '  No extensions found for \'translations\'',
+    logEnd: ' ... translations indexed.',
+    defaultContent: 'export default null;\n',
+  });
+};
+
+/**
+ * Creates the indexes.
+ * @return {Promise}
+ */
+const createIndexes = () => Promise.all([
+  indexWidgets(),
+  indexTracking(),
+  indexPortals(),
+  indexReducers(),
+  indexSubscribers(),
+  indexTranslations(),
+]);
+
+export default createIndexes;
