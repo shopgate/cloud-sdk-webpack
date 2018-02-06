@@ -10,11 +10,7 @@ import webpack from 'webpack';
 import WpDevServer from 'webpack-dev-server';
 import merge from 'webpack-merge';
 import WebpackConfigurator from 'Src/webpackConfig/WebpackConfigurator';
-import {
-  createWidgetsIndex,
-  createTrackingIndex,
-  createPortalsIndex,
-} from 'Src/webpackConfig/helpers/indexes';
+import createIndexes from 'Src/webpackConfig/helpers/indexes';
 import themes from 'Src/Themes';
 import logger, { logHelper } from 'Src/logger';
 import { isDev } from 'Src/environment';
@@ -41,35 +37,40 @@ class WebpackDevServer {
     themes.init(() => {
       logger.log('');
 
-      createWidgetsIndex();
-      createTrackingIndex();
-      createPortalsIndex();
+      createIndexes()
+        .then(() => {
+          logger.log('');
 
-      this.configurator
-        .setConfigPath(themes.getConfig())
-        .loadThemeConfig();
+          this.configurator
+            .setConfigPath(themes.getConfig())
+            .loadThemeConfig();
 
-      logHelper.logLogoStart();
+          logHelper.logLogoStart();
 
-      this.webpackConfig = this.configurator.getConfig();
-      this.serverConfig = this.configurator.getServerConfig();
+          this.webpackConfig = this.configurator.getConfig();
+          this.serverConfig = this.configurator.getServerConfig();
 
-      /**
-       * At this point we need to merge the modules resolving paths with our default webpack config.
-       * This is because if it is not included in a custom webpack config then the modules will
-       * not be resolved from the correct places.
-       */
-      this.injectModuleResolves();
-      this.extendEntry();
+          /**
+           * At this point we need to merge the modules resolving paths with our default
+           * webpack config. This is because if it is not included in a custom webpack config
+           * then the modules will not be resolved from the correct places.
+           */
+          this.injectModuleResolves();
+          this.extendEntry();
 
-      WpDevServer.addDevServerEntrypoints(this.webpackConfig, this.serverConfig);
+          WpDevServer.addDevServerEntrypoints(this.webpackConfig, this.serverConfig);
 
-      this.compiler = webpack(this.webpackConfig);
-      this.server = new WpDevServer(this.compiler, this.serverConfig);
+          this.compiler = webpack(this.webpackConfig);
+          this.server = new WpDevServer(this.compiler, this.serverConfig);
 
-      const { host, port } = this.serverConfig;
+          const { host, port } = this.serverConfig;
 
-      this.server.listen(port, host);
+          this.server.listen(port, host);
+        })
+        .catch((error) => {
+          logger.log(error);
+          process.exit(1);
+        });
     });
   }
 
