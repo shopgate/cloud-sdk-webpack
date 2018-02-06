@@ -1,6 +1,10 @@
 # Changelog
 
-## v.1.8.0
+## v1.8.2
+
+* Fixed the indexer to have a fallback if confiurations are missing.
+
+## v1.8.0
 
 * Added indexing of portal component.
 
