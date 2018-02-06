@@ -29,6 +29,7 @@
   "scripts": {
     "start": "nodemon --exec \"npm run build\"",
     "test": "mocha",
+    "test:watch": "mocha --watch",
     "cover": "rimraf ./build ./.nyc_output && nyc mocha",
     "lint": "eslint --parser babel-eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js .",
     "lint-staged": "lint-staged",

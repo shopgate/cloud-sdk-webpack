@@ -61,6 +61,20 @@ class Themes {
   }
 
   /**
+   * Returns the languages of the current theme.
+   * @return {Array}
+   */
+  getLanguages() {
+    const current = this.getCurrentTheme();
+
+    if (!current || !current.languages) {
+      return [];
+    }
+
+    return current.languages;
+  }
+
+  /**
    * Returns the current theme's Webpack configuration.
    * @return {Object}
    */
@@ -107,8 +121,34 @@ class Themes {
         name,
         path: themePath,
         config: this.findWebpackConfig(themePath),
+        languages: this.findLanguages(themePath),
       };
     });
+  }
+
+  /**
+   * Find all language files of a single theme.
+   * @param {string} themePath The path of a theme
+   * @return {Array}
+   */
+  findLanguages(themePath) { // eslint-disable-line class-methods-use-this
+    const localeRegex = /^[a-z]{2}-[a-z]{2}.json/i;
+    const localeFolder = `${themePath}/locale`;
+    let languages = [];
+
+    if (existsSync(localeFolder)) {
+      const files = readdirSync(localeFolder);
+      // Collect the languages from the folder
+      languages = files.reduce((matches, file) => {
+        if (localeRegex.test(file)) {
+          matches.push(file.substr(0, file.length - 5));
+        }
+
+        return matches;
+      }, []);
+    }
+
+    return languages;
   }
 
   /**

@@ -10,3 +10,4 @@ import getNodeModulesPath from './helpers/getNodeModulesPath';
 
 export const EXTENSIONS_PATH = resolve(process.cwd(), 'extensions');
 export const NODE_MODULES = getNodeModulesPath();
+export const DEFAULT_LANGUAGE = 'en-US';
