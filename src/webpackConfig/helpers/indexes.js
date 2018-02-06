@@ -64,7 +64,7 @@ const readConfig = options => new Promise((resolve, reject) => {
   } = options;
 
   if (!config || !isPlainObject(config)) {
-    return reject(new TypeError(`he supplied component config is not an object! Received '${typeof config}'`));
+    return reject(new TypeError(`The supplied component config is not an object! Received '${typeof config}'`));
   }
 
   const imports = importsStart ? [importsStart] : []; // Holds the import strings.
