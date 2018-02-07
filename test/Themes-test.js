@@ -6,6 +6,7 @@
  */
 
 import assert from 'assert';
+import requireUncached from 'require-uncached';
 import sinon from 'sinon';
 import { join } from 'path';
 
@@ -23,6 +24,8 @@ const logger = {
 };
 
 describe('Themes', () => {
+  let mockThemes;
+
   before(() => {
     mockThemes = [
       {
@@ -64,6 +67,34 @@ describe('Themes', () => {
       const currentTheme = themes.getCurrentTheme();
       assert.equal(mockThemes[0].name, currentTheme.name);
     });
+  });
+
+  describe('.getLanguages()', () => {
+    it('should return languages if the theme contains some', () => {
+      const result = themes.getLanguages();
+      assert.deepStrictEqual(result, mockThemes[0].languages)
+    });
+
+    it('should return an empty array if the theme does not have languages', () => {
+      themes.currentTheme = mockThemes[1];
+      const result = themes.getLanguages();
+      assert.deepStrictEqual(result, []);
+    });
+
+    it('should return an empty array if no proper theme is set', () => {
+      const oldState = themes.currentTheme;
+      themes.currentTheme = null;
+      const result = themes.getLanguages();
+      assert.deepStrictEqual(result, []);
+      // Reset the state of the theme
+      themes.currentTheme = oldState;
+    })
+
+    it('should return an empty array if language property of the theme does not exist', () => {
+      themes.currentTheme.languages = null;
+      const result = themes.getLanguages();
+      assert.deepStrictEqual(result, []);
+    })
   });
 
   describe('.findLanguages()', () => {
