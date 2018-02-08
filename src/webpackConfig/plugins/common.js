@@ -44,8 +44,10 @@ const plugins = [
       COMPONENTS_CONFIG: JSON.stringify(componentsConfig),
       THEME_CONFIG: JSON.stringify(themeConfig),
       THEME: JSON.stringify(themes.getName()),
+      // @deprecated Replaced by LOCALE and LOCALE_FILE - kept for now for theme compatibility.
+      LANG: JSON.stringify(convertLanguageToISO(appConfig.language)),
       LOCALE: JSON.stringify(convertLanguageToISO(appConfig.language)),
-      LANG: JSON.stringify(getThemeLanguage(themes.getLanguages(), appConfig.language)),
+      LOCALE_FILE: JSON.stringify(getThemeLanguage(themes.getLanguages(), appConfig.language)),
       IP: JSON.stringify(ip),
       PORT: JSON.stringify(apiPort),
     },

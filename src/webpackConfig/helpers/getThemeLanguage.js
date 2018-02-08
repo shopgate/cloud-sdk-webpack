@@ -19,36 +19,33 @@ import { DEFAULT_LANGUAGE } from '../variables';
  * @return {string}
  */
 const getThemeLanguage = (availableLanguages, locale) => {
-  let logSuffix;
-  let result;
+  let language;
 
   const needle = convertLanguageToISO(locale);
-  // Decode the language from the locale string
-  const [language] = needle.split('-');
-  // Get the first language from the list which matches the language section of the locale
-  const languageMatch = availableLanguages.find(entry => entry.startsWith(language));
+  // Decode the language from the locale string.
+  const [localeLang] = needle.split('-');
+  // Get the first language from the list which matches the language section of the locale.
+  const languageMatch = availableLanguages.find(entry => entry.startsWith(localeLang));
 
   if (availableLanguages.includes(needle)) {
-    // An exact match was found
-    result = needle;
+    // An exact match was found.
+    language = needle;
   } else if (languageMatch) {
-    // An equal language to the desired locale was found
-    result = languageMatch;
-    logSuffix = 'region ignored - fallback to language';
+    // An equal language to the desired locale was found.
+    language = languageMatch;
   } else if (availableLanguages.includes(DEFAULT_LANGUAGE)) {
-    // Nothing was found, so the default language will be used
-    result = DEFAULT_LANGUAGE;
-    logSuffix = 'fallback to default language';
+    // Nothing was found, so the default language will be used.
+    language = DEFAULT_LANGUAGE;
   } else {
-    // Add the first language if the previous checks where not successful
-    [result] = availableLanguages;
-    logSuffix = 'fallback to first available language';
+    // Add the first language if the previous checks where not successful.
+    [language] = availableLanguages;
   }
 
-  logSuffix = logSuffix ? `(${logSuffix})` : '';
-  logHelper.logger.log(`Theme language set to ${chalk.bold.green(result)} ${logSuffix}\n`);
+  logHelper
+    .logger
+    .log(`  Theme language set to ${chalk.bold.green(language)} (locale ${chalk.bold.blue(needle)})`);
 
-  return result;
+  return language;
 };
 
 export default getThemeLanguage;
