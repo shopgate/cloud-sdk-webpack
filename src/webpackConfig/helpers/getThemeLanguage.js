@@ -43,7 +43,7 @@ const getThemeLanguage = (availableLanguages, locale) => {
 
   logHelper
     .logger
-    .log(`  Theme language set to ${chalk.bold.green(language)} (locale ${chalk.bold.blue(needle)})`);
+    .log(`  Theme file language set to ${chalk.bold.green(language)} (locale ${chalk.bold.blue(needle)})`);
 
   return language;
 };
