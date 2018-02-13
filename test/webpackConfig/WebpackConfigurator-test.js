@@ -7,7 +7,6 @@
 
 import { join } from 'path';
 import assert from 'assert';
-import sinon from 'sinon';
 import WebPackConfigurator from 'Src/webpackConfig/WebpackConfigurator';
 
 const configurator = new WebPackConfigurator();

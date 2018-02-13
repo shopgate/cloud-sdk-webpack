@@ -6,24 +6,24 @@
  */
 
 import assert from 'assert';
+import sinon from 'sinon';
 import { DEFAULT_LANGUAGE } from '../../../src/webpackConfig/variables';
 import getThemeLanguage from '../../../src/webpackConfig/helpers/getThemeLanguage';
-import sinon from 'sinon';
 
 import { logHelper } from '../../../src/logger';
 
 describe('getThemeLanguage()', () => {
-  let loggerSpy = sinon.spy();
+  const loggerSpy = sinon.spy();
 
   before(() => {
     logHelper.logger = {
-      log: loggerSpy
+      log: loggerSpy,
     };
   });
 
   afterEach(() => {
     loggerSpy.reset();
-  })
+  });
 
   it('should return the correct language if the desired language is available', () => {
     const available = ['en-US', 'de-DE'];
@@ -34,7 +34,7 @@ describe('getThemeLanguage()', () => {
     sinon.assert.calledOnce(loggerSpy);
   });
 
-  it('should return a language thats fits the desired one if no exact match is available', () => {
+  it('should return a language that fits the desired one if no exact match is available', () => {
     const available = ['en-US', 'de-DE'];
     const language = 'de-CH';
     const result = getThemeLanguage(available, language);

@@ -95,8 +95,7 @@ class Themes {
    * @return {Themes}
    */
   setCurrentTheme() {
-    // eslint-disable-next-line prefer-destructuring
-    this.currentTheme = this.themes.filter(theme => process.env.theme === theme.name)[0];
+    [this.currentTheme] = this.themes.filter(theme => process.env.theme === theme.name);
     return this;
   }
 

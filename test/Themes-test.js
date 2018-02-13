@@ -6,27 +6,41 @@
  */
 
 import assert from 'assert';
-import requireUncached from 'require-uncached';
 import sinon from 'sinon';
 import { join } from 'path';
 
-let projectDirectory = join(process.cwd(), 'test/mock');
+const sandbox = sinon.sandbox.create();
+
+const projectDirectory = join(process.cwd(), 'test/mock');
 process.env.theme = 'theme1';
 
 const cwd = process.cwd();
 process.chdir(projectDirectory);
 
 const themes = require('Src/Themes').default;
-let mockThemes;
+
+/**
+ * Sets the theme environment variable
+ * @param {string} theme The updated theme name
+ * @return {string} The previous value of the variable
+ */
+const setThemeProcessEnv = (theme) => {
+  const prev = process.env.theme;
+  process.env.theme = theme;
+  return prev;
+};
 
 const logger = {
-  plain: sinon.spy(),
+  plain: sandbox.spy(),
 };
 
 describe('Themes', () => {
   let mockThemes;
+  let setCurrentThemeSpy;
 
   before(() => {
+    setCurrentThemeSpy = sandbox.spy(themes, 'setCurrentTheme');
+
     mockThemes = [
       {
         name: 'theme1',
@@ -43,6 +57,18 @@ describe('Themes', () => {
     ];
   });
 
+  after(() => {
+    sandbox.restore();
+  });
+
+  beforeEach(() => {
+    // Set the current theme to the first available one
+    setThemeProcessEnv(mockThemes[0].name);
+    themes.setCurrentTheme();
+    // Take care that the spy is reset
+    sandbox.reset();
+  });
+
   afterEach(() => {
     logger.plain.reset();
   });
@@ -55,28 +81,37 @@ describe('Themes', () => {
   });
 
   describe('.setCurrentTheme()', () => {
-    it('should set the current theme', () => {
-      const spy = sinon.spy(themes, 'setCurrentTheme');
-      themes.setCurrentTheme('theme1');
-      sinon.assert.calledOnce(spy);
+    it('should set the current theme to the 1st one', () => {
+      setThemeProcessEnv(mockThemes[0].name);
+      themes.setCurrentTheme();
+
+      assert.equal(themes.currentTheme.name, mockThemes[0].name);
+      sinon.assert.calledOnce(setCurrentThemeSpy);
+    });
+
+    it('should set the current theme to the 2nd one', () => {
+      setThemeProcessEnv(mockThemes[1].name);
+      themes.setCurrentTheme();
+      assert.equal(themes.currentTheme.name, mockThemes[1].name);
+      sinon.assert.calledOnce(setCurrentThemeSpy);
     });
   });
 
   describe('.getCurrentTheme', () => {
     it('should get the current theme', () => {
       const currentTheme = themes.getCurrentTheme();
-      assert.equal(mockThemes[0].name, currentTheme.name);
+      assert.equal(currentTheme.name, mockThemes[0].name);
     });
   });
 
   describe('.getLanguages()', () => {
     it('should return languages if the theme contains some', () => {
       const result = themes.getLanguages();
-      assert.deepStrictEqual(result, mockThemes[0].languages)
+      assert.deepStrictEqual(result, mockThemes[0].languages);
     });
 
     it('should return an empty array if the theme does not have languages', () => {
-      themes.currentTheme = mockThemes[1];
+      [, themes.currentTheme] = mockThemes;
       const result = themes.getLanguages();
       assert.deepStrictEqual(result, []);
     });
@@ -88,13 +123,13 @@ describe('Themes', () => {
       assert.deepStrictEqual(result, []);
       // Reset the state of the theme
       themes.currentTheme = oldState;
-    })
+    });
 
     it('should return an empty array if language property of the theme does not exist', () => {
       themes.currentTheme.languages = null;
       const result = themes.getLanguages();
       assert.deepStrictEqual(result, []);
-    })
+    });
   });
 
   describe('.findLanguages()', () => {
