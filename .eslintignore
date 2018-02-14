@@ -1,6 +1,5 @@
 bin/
 lib/
 build/
-test/
 .nyc_output/
 polyfill.js

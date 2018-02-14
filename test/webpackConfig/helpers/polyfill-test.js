@@ -9,8 +9,10 @@ import assert from 'assert';
 
 describe('Polyfill', () => {
   before(() => {
-    String.prototype.padEnd = undefined // eslint-disable-line no-extend-native
-    require('Src/webpackConfig/helpers/polyfill'); // eslint-disable-line global-require
+    // eslint-disable-next-line no-extend-native
+    String.prototype.padEnd = undefined;
+    // eslint-disable-next-line global-require
+    require('Src/webpackConfig/helpers/polyfill');
   });
 
   it('should pad a string correctly', () => {

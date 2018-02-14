@@ -13,6 +13,7 @@ import StringReplacePlugin from 'string-replace-webpack-plugin';
 import ProgressBarWebpackPlugin from 'progress-bar-webpack-plugin';
 import themes from '../../Themes';
 import convertLanguageToISO from '../helpers/convertLanguageToISO';
+import getThemeLanguage from '../helpers/getThemeLanguage';
 import getAppSettings from '../helpers/getAppSettings';
 import getComponentsSettings from '../helpers/getComponentsSettings';
 import getDevConfig from '../helpers/getDevConfig';
@@ -43,7 +44,10 @@ const plugins = [
       COMPONENTS_CONFIG: JSON.stringify(componentsConfig),
       THEME_CONFIG: JSON.stringify(themeConfig),
       THEME: JSON.stringify(themes.getName()),
+      // @deprecated Replaced by LOCALE and LOCALE_FILE - kept for now for theme compatibility.
       LANG: JSON.stringify(convertLanguageToISO(appConfig.language)),
+      LOCALE: JSON.stringify(convertLanguageToISO(appConfig.language)),
+      LOCALE_FILE: JSON.stringify(getThemeLanguage(themes.getLanguages(), appConfig.language)),
       IP: JSON.stringify(ip),
       PORT: JSON.stringify(apiPort),
     },
