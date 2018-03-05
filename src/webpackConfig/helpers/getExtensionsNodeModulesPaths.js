@@ -8,24 +8,29 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import { EXTENSIONS_PATH } from '../variables';
-import getAppSettings from './getAppSettings';
 
-const { extensions = [] } = getAppSettings();
+const extensions = JSON.parse(process.env.extensions);
 
 /**
  * Returns the node modules paths to all extensions.
  * @return {Array}
  */
-const getExtensionsNodeModulePaths = () => (
-  extensions.map((name) => {
-    const frontendPath = resolve(EXTENSIONS_PATH, name, 'frontend', 'node_modules');
+const getExtensionsNodeModulePaths = () => {
+  const paths = [];
+
+  Object.keys(extensions).forEach((key) => {
+    const extension = extensions[key];
+    const frontendPath = resolve(EXTENSIONS_PATH, extension.path, 'frontend', 'node_modules');
 
     if (existsSync(frontendPath)) {
-      return frontendPath;
+      paths.push(frontendPath);
+      return;
     }
 
-    return resolve(EXTENSIONS_PATH, name, 'node_modules');
-  })
-);
+    paths.push(resolve(EXTENSIONS_PATH, extension.path, 'node_modules'));
+  });
+
+  return paths;
+};
 
 export default getExtensionsNodeModulePaths;
