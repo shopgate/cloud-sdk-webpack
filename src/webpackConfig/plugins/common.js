@@ -39,7 +39,7 @@ const plugins = [
     minify: false,
   }),
   new PreloadWebpackPlugin({
-    rel: 'prefetch',
+    rel: 'preload',
     as: 'script',
   }),
   new webpack.DefinePlugin({

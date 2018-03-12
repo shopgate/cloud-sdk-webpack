@@ -17,6 +17,13 @@ import logger from 'Src/logger';
 import { EXTENSIONS_PATH } from '../variables';
 import getComponentsSettings from './getComponentsSettings';
 
+const TYPE_WIDGETS = 'WIDGETS';
+const TYPE_TRACKING = 'TRACKING';
+const TYPE_PORTALS = 'PORTALS';
+const TYPE_REDUCERS = 'REDUCERS';
+const TYPE_SUBSCRIBERS = 'SUBSCRIBERS';
+const TYPE_TRANSLATIONS = 'TRANSLATIONS';
+
 const defaultFileContent = 'export default {};\n';
 
 /**
@@ -55,6 +62,7 @@ const getVariableName = id => upperFirst(camelCase(id.replace(/@/g, '').replace(
  */
 const readConfig = options => new Promise((resolve, reject) => {
   const {
+    type,
     config,
     importsStart = null,
     importsEnd = null,
@@ -81,14 +89,20 @@ const readConfig = options => new Promise((resolve, reject) => {
 
       const variableName = getVariableName(id);
 
-      imports.push(`import ${variableName} from '${componentPath}';`);
+      if (type !== TYPE_PORTALS && type !== TYPE_WIDGETS) {
+        imports.push(`import ${variableName} from '${componentPath}';`);
+      }
 
       if (isArray) {
         exports.push(`  ${variableName},`);
         return;
       }
 
-      exports.push(`  '${id}': ${variableName},`);
+      if (type === TYPE_PORTALS || type === TYPE_WIDGETS) {
+        exports.push(`  '${id}': Loadable({\n    loader: () => import('${componentPath}'),\n    loading: () => null\n  }),`);
+      } else {
+        exports.push(`  '${id}': ${variableName},`);
+      }
     });
   } catch (e) {
     return reject(e);
@@ -218,7 +232,11 @@ const indexWidgets = () => {
 
   return index({
     file: 'widgets.js',
-    config: { config: widgets },
+    config: {
+      type: TYPE_WIDGETS,
+      config: widgets,
+      importsStart: 'import Loadable from \'react-loadable\';',
+    },
     logStart: '  Indexing widgets ...',
     logNotFound: '  No extensions found for \'widgets\'',
     logEnd: ' ... widgets indexed.',
@@ -234,7 +252,10 @@ const indexTracking = () => {
 
   return index({
     file: 'tracking.js',
-    config: { config: tracking },
+    config: {
+      type: TYPE_TRACKING,
+      config: tracking,
+    },
     logStart: '  Indexing trackers ...',
     logNotFound: '  No extensions found for \'tracking\'',
     logEnd: ' ... trackers indexed.',
@@ -251,8 +272,9 @@ const indexPortals = () => {
   return index({
     file: 'portals.js',
     config: {
+      type: TYPE_PORTALS,
       config: portals,
-      importsStart: 'import portalCollection from \'@shopgate/pwa-common/helpers/portals/portalCollection\';',
+      importsStart: 'import Loadable from \'react-loadable\';\nimport portalCollection from \'@shopgate/pwa-common/helpers/portals/portalCollection\';',
       exportsStart: 'portalCollection.registerPortals({',
       exportsEnd: '});',
     },
@@ -271,7 +293,10 @@ const indexReducers = () => {
 
   return index({
     file: 'reducers.js',
-    config: { config: reducers },
+    config: {
+      type: TYPE_REDUCERS,
+      config: reducers,
+    },
     logStart: '  Indexing reducers ...',
     logNotFound: '  No extensions found for \'reducers\'',
     logEnd: ' ... reducers indexed.',
@@ -289,6 +314,7 @@ const indexSubscribers = () => {
   return index({
     file: 'subscribers.js',
     config: {
+      type: TYPE_SUBSCRIBERS,
       config: subscribers,
       exportsStart: 'export default [',
       exportsEnd: '];',
@@ -310,7 +336,10 @@ const indexTranslations = () => {
 
   return index({
     file: 'translations.js',
-    config: { config: translations },
+    config: {
+      type: TYPE_TRANSLATIONS,
+      config: translations,
+    },
     logStart: '  Indexing translations ...',
     logNotFound: '  No extensions found for \'translations\'',
     logEnd: ' ... translations indexed.',
