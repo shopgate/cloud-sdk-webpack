@@ -11,6 +11,7 @@ import webpack from 'webpack';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import ProgressBarWebpackPlugin from 'progress-bar-webpack-plugin';
+import PreloadWebpackPlugin from 'preload-webpack-plugin';
 import themes from '../../Themes';
 import convertLanguageToISO from '../helpers/convertLanguageToISO';
 import getThemeLanguage from '../helpers/getThemeLanguage';
@@ -36,6 +37,10 @@ const plugins = [
     inject: false,
     cache: false,
     minify: false,
+  }),
+  new PreloadWebpackPlugin({
+    rel: 'prefetch',
+    as: 'script',
   }),
   new webpack.DefinePlugin({
     'process.env': {

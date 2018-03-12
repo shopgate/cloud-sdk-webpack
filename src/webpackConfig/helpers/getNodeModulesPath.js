@@ -16,7 +16,7 @@ import { isDev } from '../../environment';
 const getNodeModulesPath = () => {
   const envSdkPath = (process.env.SDK_PATH || '');
   const sdkPath = resolve(envSdkPath, 'node_modules');
-  const localPath = resolve(__dirname, '..', '..', 'node_modules');
+  const localPath = resolve(__dirname, '..', '..', '..', 'node_modules');
 
   if (!isDev) {
     return sdkPath;

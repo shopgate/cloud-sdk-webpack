@@ -16,10 +16,12 @@ import getDevConfig from './helpers/getDevConfig';
 
 const { sourceMap } = getDevConfig();
 
+const reactHotLoader = resolve(NODE_MODULES, 'react-hot-loader/patch');
+
 export default merge(common, {
   entry: {
     app: [
-      resolve(NODE_MODULES, 'react-hot-loader/patch'),
+      reactHotLoader,
       './index.jsx',
     ],
   },
