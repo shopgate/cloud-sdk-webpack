@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.8.3
+
+* Fixed resolving of extension node_modules
+
 ## v1.8.2
 
 * Fixed the indexer to have a fallback if confiurations are missing.
