@@ -67,17 +67,15 @@ class WebpackProcess {
         this.logger.error(err.details);
       }
 
-      return;
+      throw new Error(err);
     }
 
     if (stats.hasErrors()) {
-      this.logger.log(stats.toString({
+      throw new Error(stats.toString({
         colors: true,
         warnings: false,
         chunks: false,
       }));
-
-      return;
     }
 
     logHelper.logBuildFinished();
