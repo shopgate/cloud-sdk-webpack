@@ -67,7 +67,7 @@ class WebpackProcess {
         this.logger.error(err.details);
       }
 
-      return;
+      throw new Error(err);
     }
 
     if (stats.hasErrors()) {
