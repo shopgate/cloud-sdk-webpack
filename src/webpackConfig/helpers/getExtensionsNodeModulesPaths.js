@@ -8,8 +8,15 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import { EXTENSIONS_PATH } from '../variables';
+import logger from '../../logger';
 
-const extensions = JSON.parse(process.env.extensions);
+let extensions = {};
+
+try {
+  extensions = JSON.parse(process.env.extensions);
+} catch (error) {
+  logger.log('No extension ins process specified!');
+}
 
 /**
  * Returns the node modules paths to all extensions.
