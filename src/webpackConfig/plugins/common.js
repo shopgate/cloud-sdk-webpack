@@ -30,6 +30,21 @@ const themeConfig = getThemeConfig();
 const PUBLIC_FOLDER = 'public';
 
 const plugins = [
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify(ENV),
+      APP_CONFIG: JSON.stringify(appConfig),
+      COMPONENTS_CONFIG: JSON.stringify(componentsConfig),
+      THEME_CONFIG: JSON.stringify(themeConfig),
+      THEME: JSON.stringify(themes.getName()),
+      // @deprecated Replaced by LOCALE and LOCALE_FILE - kept for now for theme compatibility.
+      LANG: JSON.stringify(convertLanguageToISO(appConfig.language)),
+      LOCALE: JSON.stringify(convertLanguageToISO(appConfig.language)),
+      LOCALE_FILE: JSON.stringify(getThemeLanguage(themes.getLanguages(), appConfig.language)),
+      IP: JSON.stringify(ip),
+      PORT: JSON.stringify(apiPort),
+    },
+  }),
   new StringReplacePlugin(),
   new HTMLWebpackPlugin({
     title: appConfig.shopName || themes.getName(),
@@ -46,21 +61,6 @@ const plugins = [
     as: 'script',
   }),
   new ResourceHintWebpackPlugin(),
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify(ENV),
-      APP_CONFIG: JSON.stringify(appConfig),
-      COMPONENTS_CONFIG: JSON.stringify(componentsConfig),
-      THEME_CONFIG: JSON.stringify(themeConfig),
-      THEME: JSON.stringify(themes.getName()),
-      // @deprecated Replaced by LOCALE and LOCALE_FILE - kept for now for theme compatibility.
-      LANG: JSON.stringify(convertLanguageToISO(appConfig.language)),
-      LOCALE: JSON.stringify(convertLanguageToISO(appConfig.language)),
-      LOCALE_FILE: JSON.stringify(getThemeLanguage(themes.getLanguages(), appConfig.language)),
-      IP: JSON.stringify(ip),
-      PORT: JSON.stringify(apiPort),
-    },
-  }),
   new webpack.LoaderOptionsPlugin({
     debug: isDev,
     options: {
