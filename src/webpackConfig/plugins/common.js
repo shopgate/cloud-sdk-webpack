@@ -12,6 +12,7 @@ import HTMLWebpackPlugin from 'html-webpack-plugin';
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import ProgressBarWebpackPlugin from 'progress-bar-webpack-plugin';
 import PreloadWebpackPlugin from 'preload-webpack-plugin';
+import ResourceHintWebpackPlugin from 'resource-hints-webpack-plugin';
 import themes from '../../Themes';
 import convertLanguageToISO from '../helpers/convertLanguageToISO';
 import getThemeLanguage from '../helpers/getThemeLanguage';
@@ -37,11 +38,14 @@ const plugins = [
     inject: false,
     cache: false,
     minify: false,
+    prefetch: ['**/*.*'],
+    preload: ['**/*.*'],
   }),
   new PreloadWebpackPlugin({
     rel: 'preload',
     as: 'script',
   }),
+  new ResourceHintWebpackPlugin(),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(ENV),

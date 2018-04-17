@@ -11,7 +11,7 @@ import commonPlugins from './common';
 
 export default [
   ...commonPlugins,
-  ...process.env.analyze && [new BundleAnalyzerPlugin()],
+  ...(process.env.analyze === 'true') && [new BundleAnalyzerPlugin()],
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoEmitOnErrorsPlugin(),
 ];
