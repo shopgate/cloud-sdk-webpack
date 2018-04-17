@@ -45,6 +45,11 @@ const plugins = [
       PORT: JSON.stringify(apiPort),
     },
   }),
+  new webpack.optimize.CommonsChunkPlugin({
+    minChunks: 2,
+    name: 'common',
+    filename: isProd ? '[name].[chunkhash].js' : '[name].js',
+  }),
   new StringReplacePlugin(),
   new HTMLWebpackPlugin({
     title: appConfig.shopName || themes.getName(),
@@ -72,11 +77,6 @@ const plugins = [
   }),
   new webpack.IgnorePlugin(),
   new webpack.optimize.ModuleConcatenationPlugin(),
-  new webpack.optimize.CommonsChunkPlugin({
-    minChunks: 2,
-    name: 'common',
-    filename: isProd ? '[name].[chunkhash].js' : '[name].js',
-  }),
   new webpack.HashedModuleIdsPlugin(),
   new ProgressBarWebpackPlugin({
     format: `  building [${blue(':bar')}] [:msg] ${green(':percent')} (:elapsed seconds)`,
