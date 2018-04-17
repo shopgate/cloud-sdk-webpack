@@ -44,6 +44,7 @@ export default {
   resolve: {
     extensions: ['.json', '.js', '.jsx'],
     modules: [
+      resolve(themes.getPath(), '..', '..', 'node_modules'),
       resolve(themes.getPath(), 'node_modules'),
       resolve(themes.getPath(), 'widgets'),
       resolve(EXTENSIONS_PATH),
