@@ -8,7 +8,6 @@
 import { resolve } from 'path';
 import merge from 'webpack-merge';
 import themes from '../Themes';
-import { NODE_MODULES } from './variables';
 import common from './webpack.common';
 import plugins from './plugins/dev';
 import loaders from './loaders/dev';
@@ -16,12 +15,9 @@ import getDevConfig from './helpers/getDevConfig';
 
 const { sourceMap } = getDevConfig();
 
-const reactHotLoader = resolve(NODE_MODULES, 'react-hot-loader/patch');
-
 export default merge(common, {
   entry: {
     app: [
-      reactHotLoader,
       './index.jsx',
     ],
   },

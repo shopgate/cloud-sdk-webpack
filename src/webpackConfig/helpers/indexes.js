@@ -78,6 +78,10 @@ const readConfig = options => new Promise((resolve, reject) => {
   const imports = importsStart ? [importsStart] : []; // Holds the import strings.
   const exports = [exportsStart]; // Holds the export strings.
 
+  if (type === TYPE_PORTALS || type === TYPE_WIDGETS) {
+    imports.push('');
+  }
+
   try {
     Object.keys(config).forEach((id) => {
       const component = config[id];
@@ -91,6 +95,8 @@ const readConfig = options => new Promise((resolve, reject) => {
 
       if (type !== TYPE_PORTALS && type !== TYPE_WIDGETS) {
         imports.push(`import ${variableName} from '${componentPath}';`);
+      } else {
+        imports.push(`const ${variableName} = Loadable({\n  loader: () => import('${componentPath}'),\n  loading: Loading,\n});\n`);
       }
 
       if (isArray) {
@@ -98,11 +104,7 @@ const readConfig = options => new Promise((resolve, reject) => {
         return;
       }
 
-      if (type === TYPE_PORTALS || type === TYPE_WIDGETS) {
-        exports.push(`  '${id}': Loadable({\n    loader: () => import('${componentPath}'),\n    loading: () => null\n  }),`);
-      } else {
-        exports.push(`  '${id}': ${variableName},`);
-      }
+      exports.push(`  '${id}': ${variableName},`);
     });
   } catch (e) {
     return reject(e);
@@ -235,7 +237,7 @@ const indexWidgets = () => {
     config: {
       type: TYPE_WIDGETS,
       config: widgets,
-      importsStart: 'import Loadable from \'react-loadable\';',
+      importsStart: 'import Loadable from \'react-loadable\';\nimport Loading from \'@shopgate/pwa-common/components/Loading\';',
     },
     logStart: '  Indexing widgets ...',
     logNotFound: '  No extensions found for \'widgets\'',
@@ -274,7 +276,7 @@ const indexPortals = () => {
     config: {
       type: TYPE_PORTALS,
       config: portals,
-      importsStart: 'import Loadable from \'react-loadable\';\nimport portalCollection from \'@shopgate/pwa-common/helpers/portals/portalCollection\';',
+      importsStart: 'import Loadable from \'react-loadable\';\nimport Loading from \'@shopgate/pwa-common/components/Loading\';\nimport portalCollection from \'@shopgate/pwa-common/helpers/portals/portalCollection\';',
       exportsStart: 'portalCollection.registerPortals({',
       exportsEnd: '});',
     },
