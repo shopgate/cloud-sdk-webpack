@@ -15,14 +15,14 @@ import loaders from './loaders/prod';
 export default merge(common, {
   entry: {
     app: [
+      resolve(__dirname, 'scripts', 'offline'),
       resolve(themes.getPath(), 'index.jsx'),
-      resolve(__dirname, './modules/cache'),
     ],
   },
   module: {
     rules: loaders,
   },
-  devtool: 'cheap-module-source-map',
+  devtool: false,
   output: {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
