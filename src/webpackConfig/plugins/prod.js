@@ -7,12 +7,11 @@
 
 import webpack from 'webpack';
 import CompressionWebpackPlugin from 'compression-webpack-plugin';
-import OfflinePlugin from 'offline-plugin';
+import WorkboxPlugin from 'workbox-webpack-plugin';
 import commonPlugins from './common';
 
 export default [
   ...commonPlugins,
-  new OfflinePlugin(),
   new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: true,
@@ -31,6 +30,11 @@ export default [
     },
     comments: false,
     sourceMap: true,
+  }),
+  new WorkboxPlugin.GenerateSW({
+    swDest: 'sw.js',
+    clientsClaim: true,
+    skipWaiting: true,
   }),
   new CompressionWebpackPlugin({
     asset: '[path].gz[query]',
