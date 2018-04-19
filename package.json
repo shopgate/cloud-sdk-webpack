@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/cloud-sdk-webpack",
-  "version": "1.10.4",
+  "version": "1.11.0",
   "description": "Shopgate's Webpack compiler",
   "license": "Apache-2.0",
   "repository": {
