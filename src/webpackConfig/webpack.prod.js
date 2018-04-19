@@ -15,7 +15,7 @@ import loaders from './loaders/prod';
 export default merge(common, {
   entry: {
     app: [
-      resolve(__dirname, 'scripts', 'offline'),
+      resolve(__dirname, 'scripts', 'offline.js'),
       resolve(themes.getPath(), 'index.jsx'),
     ],
   },
