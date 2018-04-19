@@ -11,6 +11,8 @@ import webpack from 'webpack';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import ProgressBarWebpackPlugin from 'progress-bar-webpack-plugin';
+import PreloadWebpackPlugin from 'preload-webpack-plugin';
+import ScriptExtHtmlWebpackPlugin from 'script-ext-html-webpack-plugin';
 import themes from '../../Themes';
 import convertLanguageToISO from '../helpers/convertLanguageToISO';
 import getThemeLanguage from '../helpers/getThemeLanguage';
@@ -28,15 +30,6 @@ const themeConfig = getThemeConfig();
 const PUBLIC_FOLDER = 'public';
 
 const plugins = [
-  new StringReplacePlugin(),
-  new HTMLWebpackPlugin({
-    title: appConfig.shopName || themes.getName(),
-    filename: resolve(themes.getPath(), PUBLIC_FOLDER, 'index.html'),
-    template: resolve(__dirname, '../templates/index.ejs'),
-    inject: false,
-    cache: false,
-    minify: false,
-  }),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(ENV),
@@ -52,6 +45,30 @@ const plugins = [
       PORT: JSON.stringify(apiPort),
     },
   }),
+  new webpack.optimize.CommonsChunkPlugin({
+    minChunks: 2,
+    name: 'common',
+    filename: isProd ? '[name].[chunkhash].js' : '[name].js',
+  }),
+  new StringReplacePlugin(),
+  new HTMLWebpackPlugin({
+    title: appConfig.shopName || themes.getName(),
+    filename: resolve(themes.getPath(), PUBLIC_FOLDER, 'index.html'),
+    template: resolve(__dirname, '../templates/index.ejs'),
+    inject: false,
+    cache: false,
+    minify: false,
+    prefetch: ['**/*.*'],
+    preload: ['**/*.*'],
+  }),
+  new ScriptExtHtmlWebpackPlugin({
+    sync: ['app', 'common'],
+    defaultAttribute: 'async',
+  }),
+  new PreloadWebpackPlugin({
+    rel: 'preload',
+    as: 'script',
+  }),
   new webpack.LoaderOptionsPlugin({
     debug: isDev,
     options: {
@@ -63,11 +80,6 @@ const plugins = [
   }),
   new webpack.IgnorePlugin(),
   new webpack.optimize.ModuleConcatenationPlugin(),
-  new webpack.optimize.CommonsChunkPlugin({
-    minChunks: 2,
-    name: 'common',
-    filename: isProd ? '[name].[chunkhash].js' : '[name].js',
-  }),
   new webpack.HashedModuleIdsPlugin(),
   new ProgressBarWebpackPlugin({
     format: `  building [${blue(':bar')}] [:msg] ${green(':percent')} (:elapsed seconds)`,

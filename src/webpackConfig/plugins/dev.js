@@ -6,10 +6,12 @@
  */
 
 import webpack from 'webpack';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import commonPlugins from './common';
 
 export default [
   ...commonPlugins,
+  ...(process.env.analyze === 'true') && [new BundleAnalyzerPlugin()],
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoEmitOnErrorsPlugin(),
 ];
