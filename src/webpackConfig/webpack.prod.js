@@ -7,10 +7,13 @@
 
 import { resolve } from 'path';
 import merge from 'webpack-merge';
+import { argv } from 'yargs';
 import themes from '../Themes';
 import common from './webpack.common';
 import plugins from './plugins/prod';
 import loaders from './loaders/prod';
+
+const publicPath = argv.publicPath || './';
 
 export default merge(common, {
   entry: {
@@ -27,7 +30,7 @@ export default merge(common, {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
     path: resolve(themes.getPath(), 'public'),
-    publicPath: './',
+    publicPath,
   },
   plugins,
   stats: 'errors-only',
