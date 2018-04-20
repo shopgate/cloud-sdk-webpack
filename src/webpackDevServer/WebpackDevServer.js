@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { resolve } from 'path';
 import webpack from 'webpack';
 import WpDevServer from 'webpack-dev-server';
 import merge from 'webpack-merge';
@@ -13,7 +12,6 @@ import WebpackConfigurator from 'Src/webpackConfig/WebpackConfigurator';
 import createIndexes from 'Src/webpackConfig/helpers/indexes';
 import themes from 'Src/Themes';
 import logger, { logHelper } from 'Src/logger';
-import { isDev } from 'Src/environment';
 
 /**
  * The WebpackDevServer class.
@@ -56,7 +54,6 @@ class WebpackDevServer {
            * then the modules will not be resolved from the correct places.
            */
           this.injectModuleResolves();
-          this.extendEntry();
 
           WpDevServer.addDevServerEntrypoints(this.webpackConfig, this.serverConfig);
 
@@ -84,33 +81,6 @@ class WebpackDevServer {
         modules: require('../webpackConfig/webpack.common').default.resolve.modules,
       },
     });
-  }
-
-  /**
-   * Extends the app entry with the react hot loader in development.
-   */
-  extendEntry() {
-    // This is for development only.
-    if (!isDev) {
-      return;
-    }
-
-    // The resolved react-hot-loader path.
-    const hotLoaderPatch = resolve(process.env.SDK_PATH, 'node_modules', 'react-hot-loader/patch');
-    // The current entry configuration.
-    const entry = this.getEntry();
-
-    // Check if the react-hot-loader is already implemented.
-    if (entry.includes(hotLoaderPatch)) {
-      return;
-    }
-
-    // Inject the react hot loader.
-    // IMPORTANT: Needs to be the first entry in the array.
-    this.webpackConfig.entry.app = [
-      hotLoaderPatch,
-      ...entry,
-    ];
   }
 
   /**
