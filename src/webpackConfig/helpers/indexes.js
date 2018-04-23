@@ -164,7 +164,7 @@ const createStrings = input => new Promise((resolve, reject) => {
 
     const importsString = input.imports.length ? `${input.imports.join('\n')}\n\n` : '';
     const exportsString = input.exports.length ? `${input.exports.join('\n')}\n` : '';
-    const indexString = `${importsString}${exportsString}`;
+    const indexString = `${importsString}${exportsString}`.replace('\n\n\n', '\n\n');
 
     return resolve(indexString.length ? indexString : null);
   } catch (e) {
