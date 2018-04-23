@@ -82,9 +82,6 @@ const readConfig = options => new Promise((resolve, reject) => {
   // eslint-disable-next-line global-require, import/no-dynamic-require
   const themePackage = require(`${themes.getPath()}/package.json`);
 
-  console.warn(themePackage.dependencies);
-  console.warn(has(themePackage.dependencies, 'react-loadable'));
-
   if ((type === TYPE_PORTALS || type === TYPE_WIDGETS) && has(themePackage.dependencies, 'react-loadable')) {
     imports.push('import Loadable from \'react-loadable\';');
     imports.push('import Loading from \'@shopgate/pwa-common/components/Loading\';');
