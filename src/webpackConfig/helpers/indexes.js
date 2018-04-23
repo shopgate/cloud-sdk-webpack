@@ -8,6 +8,7 @@
 import path from 'path';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import camelCase from 'lodash/camelCase';
+import has from 'lodash/has';
 import Promise from 'bluebird';
 import upperFirst from 'lodash/upperFirst';
 import isPlainObject from 'lodash/isPlainObject';
@@ -78,7 +79,12 @@ const readConfig = options => new Promise((resolve, reject) => {
   const imports = importsStart ? [importsStart] : []; // Holds the import strings.
   const exports = [exportsStart]; // Holds the export strings.
 
-  if (type === TYPE_PORTALS || type === TYPE_WIDGETS) {
+  // eslint-disable-next-line global-require, import/no-dynamic-require
+  const themePackage = require(`${themes.getPath()}/package.json`);
+
+  if ((type === TYPE_PORTALS || type === TYPE_WIDGETS) && has(themePackage.dependencies, 'react-loadable')) {
+    imports.push('import Loadable from \'react-loadable\';');
+    imports.push('import Loading from \'@shopgate/pwa-common/components/Loading\';');
     imports.push('');
   }
 
@@ -93,7 +99,7 @@ const readConfig = options => new Promise((resolve, reject) => {
 
       const variableName = getVariableName(id);
 
-      if (type !== TYPE_PORTALS && type !== TYPE_WIDGETS) {
+      if ((type !== TYPE_PORTALS && type !== TYPE_WIDGETS) || !has(themePackage.dependencies, 'react-loadable')) {
         imports.push(`import ${variableName} from '${componentPath}';`);
       } else {
         imports.push(`const ${variableName} = Loadable({\n  loader: () => import('${componentPath}'),\n  loading: Loading,\n});\n`);
@@ -158,7 +164,7 @@ const createStrings = input => new Promise((resolve, reject) => {
 
     const importsString = input.imports.length ? `${input.imports.join('\n')}\n\n` : '';
     const exportsString = input.exports.length ? `${input.exports.join('\n')}\n` : '';
-    const indexString = `${importsString}${exportsString}`;
+    const indexString = `${importsString}${exportsString}`.replace('\n\n\n', '\n\n');
 
     return resolve(indexString.length ? indexString : null);
   } catch (e) {
@@ -237,7 +243,6 @@ const indexWidgets = () => {
     config: {
       type: TYPE_WIDGETS,
       config: widgets,
-      importsStart: 'import Loadable from \'react-loadable\';\nimport Loading from \'@shopgate/pwa-common/components/Loading\';',
     },
     logStart: '  Indexing widgets ...',
     logNotFound: '  No extensions found for \'widgets\'',
@@ -276,7 +281,7 @@ const indexPortals = () => {
     config: {
       type: TYPE_PORTALS,
       config: portals,
-      importsStart: 'import Loadable from \'react-loadable\';\nimport Loading from \'@shopgate/pwa-common/components/Loading\';\nimport portalCollection from \'@shopgate/pwa-common/helpers/portals/portalCollection\';',
+      importsStart: 'import portalCollection from \'@shopgate/pwa-common/helpers/portals/portalCollection\';',
       exportsStart: 'portalCollection.registerPortals({',
       exportsEnd: '});',
     },
