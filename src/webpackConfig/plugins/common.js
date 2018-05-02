@@ -66,7 +66,7 @@ const plugins = [
     defaultAttribute: 'async',
   }),
   new PreloadWebpackPlugin({
-    rel: 'preload',
+    rel: 'prefetch',
     as: 'script',
   }),
   new webpack.LoaderOptionsPlugin({
