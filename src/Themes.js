@@ -7,7 +7,7 @@
 
 import { existsSync, lstatSync, readdirSync } from 'fs';
 import { join, resolve } from 'path';
-import { isProd } from './environment';
+import { isStaging, isProd } from './environment';
 
 /**
  * The Themes class.
@@ -163,7 +163,15 @@ class Themes {
       return themeConfig;
     }
 
-    const configFile = isProd ? 'webpack.prod.js' : 'webpack.dev.js';
+    let configFile = 'webpack.dev.js';
+
+    if (isStaging) {
+      configFile = 'webpack.staging.js';
+    }
+
+    if (isProd) {
+      configFile = 'webpack.prod.js';
+    }
 
     return join(__dirname, `./webpackConfig/${configFile}`);
   }

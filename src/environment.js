@@ -6,6 +6,7 @@
  */
 
 export const ENV_KEY_DEVELOPMENT = 'development';
+export const ENV_KEY_STAGING = 'staging';
 export const ENV_KEY_PRODUCTION = 'production';
 
 if (!process.env.NODE_ENV) {
@@ -14,4 +15,9 @@ if (!process.env.NODE_ENV) {
 
 export const ENV = process.env.NODE_ENV;
 export const isProd = (process.env.NODE_ENV === ENV_KEY_PRODUCTION);
+export const isStaging = (process.env.NODE_ENV === ENV_KEY_STAGING);
 export const isDev = (process.env.NODE_ENV === ENV_KEY_DEVELOPMENT);
+
+if (isStaging) {
+  process.env.BABEL_ENV = ENV_KEY_PRODUCTION;
+}
