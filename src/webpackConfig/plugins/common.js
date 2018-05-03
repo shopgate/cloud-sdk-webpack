@@ -46,7 +46,13 @@ const plugins = [
     },
   }),
   new webpack.optimize.CommonsChunkPlugin({
-    minChunks: 2,
+    minChunks: (module, count) => (
+      (module.resource && module.resource.indexOf('lodash') !== -1) ||
+      (module.resource && module.resource.indexOf('gsap') !== -1) ||
+      (module.resource && module.resource.indexOf('hammerjs') !== -1) ||
+      (module.resource && module.resource.indexOf('swiper') !== -1) ||
+      count >= 2
+    ),
     name: 'common',
     filename: isProd ? '[name].[chunkhash].js' : '[name].js',
   }),
