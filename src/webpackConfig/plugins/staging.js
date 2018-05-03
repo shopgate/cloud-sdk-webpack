@@ -37,7 +37,7 @@ export default [
     test: /\.js$|\.css$/,
     minRatio: 0.6,
   }),
-  ...(process.env.analyze === 'true') && [new BundleAnalyzerPlugin()],
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoEmitOnErrorsPlugin(),
+  ...(process.env.analyze === 'true') && [new BundleAnalyzerPlugin()],
 ];
