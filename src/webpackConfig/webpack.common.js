@@ -36,6 +36,8 @@ export default {
       'react-redux',
       'react-helmet',
       'recompose',
+      'rxjs',
+      'reselect',
       'gsap',
       'hammerjs',
       resolve(__dirname, './helpers/polyfill'),

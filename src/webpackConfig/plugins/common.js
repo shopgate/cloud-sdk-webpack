@@ -51,6 +51,7 @@ const plugins = [
       (module.resource && module.resource.indexOf('gsap') !== -1) ||
       (module.resource && module.resource.indexOf('hammerjs') !== -1) ||
       (module.resource && module.resource.indexOf('swiper') !== -1) ||
+      (module.resource && module.resource.indexOf('rxjs') !== -1) ||
       count >= 2
     ),
     name: 'common',
