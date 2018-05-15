@@ -20,7 +20,7 @@ import getAppSettings from '../helpers/getAppSettings';
 import getComponentsSettings from '../helpers/getComponentsSettings';
 import getDevConfig from '../helpers/getDevConfig';
 import getThemeConfig from '../helpers/getThemeConfig';
-import { ENV, isDev, isProd } from '../../environment';
+import { ENV_KEY_PRODUCTION, ENV, isStaging, isDev, isProd } from '../../environment';
 
 const appConfig = getAppSettings();
 const componentsConfig = getComponentsSettings();
@@ -28,11 +28,12 @@ const { ip, apiPort } = getDevConfig();
 const themeConfig = getThemeConfig();
 
 const PUBLIC_FOLDER = 'public';
+const nodeEnv = isStaging ? ENV_KEY_PRODUCTION : ENV;
 
 const plugins = [
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: JSON.stringify(ENV),
+      NODE_ENV: JSON.stringify(nodeEnv),
       APP_CONFIG: JSON.stringify(appConfig),
       COMPONENTS_CONFIG: JSON.stringify(componentsConfig),
       THEME_CONFIG: JSON.stringify(themeConfig),
