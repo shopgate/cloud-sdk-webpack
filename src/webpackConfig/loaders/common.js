@@ -41,7 +41,7 @@ export default nodeModules => [
   {
     test: /worker\.js$/,
     use: [
-      'worker-loader',
+      resolve(nodeModules, 'worker-loader'),
     ],
   },
 ];
