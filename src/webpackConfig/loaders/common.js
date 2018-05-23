@@ -33,9 +33,15 @@ export default nodeModules => [
     ],
   },
   {
-    test: /\.ejs/,
+    test: /\.ejs$/,
     use: [
       resolve(nodeModules, 'ejs-loader'),
+    ],
+  },
+  {
+    test: /worker\.js$/,
+    use: [
+      'worker-loader',
     ],
   },
 ];

@@ -16,6 +16,7 @@ export default [
   {
     test: /\.(js|jsx)$/,
     exclude: [
+      /worker\.js$/,
       resolve(process.env.SDK_PATH),
       resolve(process.env.SDK_PATH, 'bin'),
     ],
