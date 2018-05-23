@@ -15,6 +15,9 @@ export default [
   ...common(NODE_MODULES),
   {
     test: /\.(js|jsx)$/,
+    exclude: [
+      /worker\.js$/,
+    ],
     include: [resolve(process.env.SDK_PATH, 'src')],
     use: [
       stringReplacementLoader,
