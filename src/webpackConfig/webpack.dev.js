@@ -23,7 +23,7 @@ export default merge(common, {
   },
   module: {
     noParse(content) {
-      return /localforage/.test(content);
+      return /localforage|intl/.test(content);
     },
     rules: loaders,
   },
