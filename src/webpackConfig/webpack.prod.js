@@ -20,8 +20,8 @@ export default merge(common, {
     ],
   },
   module: {
-    noParse(content) {
-      return /localforage|intl/.test(content);
+    noParse: function noParse(content) {
+      return /localforage/.test(content);
     },
     rules: loaders,
   },

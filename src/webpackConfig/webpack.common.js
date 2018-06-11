@@ -25,9 +25,9 @@ export default {
   },
   entry: {
     common: [
-      resolve(NODE_MODULES, 'babel-polyfill'),
-      resolve(NODE_MODULES, 'intl'),
-      resolve(NODE_MODULES, `intl/locale-data/jsonp/${convertLanguageToISO(language)}.js`),
+      'babel-polyfill',
+      'intl',
+      `intl/locale-data/jsonp/${convertLanguageToISO(language)}.js`,
       'react',
       'react-dom',
       'lodash',
