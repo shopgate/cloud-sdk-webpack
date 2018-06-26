@@ -82,7 +82,7 @@ const readConfig = options => new Promise((resolve, reject) => {
   // eslint-disable-next-line global-require, import/no-dynamic-require
   const themePackage = require(`${themes.getPath()}/package.json`);
 
-  if ((type === TYPE_PORTALS || type === TYPE_WIDGETS) && has(themePackage.dependencies, 'react-loadable')) {
+  if (type === TYPE_WIDGETS && has(themePackage.dependencies, 'react-loadable')) {
     imports.push('import Loadable from \'react-loadable\';');
     imports.push('import Loading from \'@shopgate/pwa-common/components/Loading\';');
     imports.push('');
@@ -99,7 +99,7 @@ const readConfig = options => new Promise((resolve, reject) => {
 
       const variableName = getVariableName(id);
 
-      if ((type !== TYPE_PORTALS && type !== TYPE_WIDGETS) || !has(themePackage.dependencies, 'react-loadable')) {
+      if (type !== TYPE_WIDGETS || !has(themePackage.dependencies, 'react-loadable')) {
         imports.push(`import ${variableName} from '${componentPath}';`);
       } else {
         imports.push(`const ${variableName} = Loadable({\n  loader: () => import('${componentPath}'),\n  loading: Loading,\n});\n`);
@@ -281,9 +281,6 @@ const indexPortals = () => {
     config: {
       type: TYPE_PORTALS,
       config: portals,
-      importsStart: 'import portalCollection from \'@shopgate/pwa-common/helpers/portals/portalCollection\';',
-      exportsStart: 'portalCollection.registerPortals({',
-      exportsEnd: '});',
     },
     logStart: '  Indexing portals ...',
     logNotFound: '  No extensions found for \'portals\'',
