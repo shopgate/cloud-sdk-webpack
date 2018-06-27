@@ -286,6 +286,9 @@ const indexPortals = () => {
     config: {
       type: TYPE_PORTALS,
       config: portals,
+      importsStart: 'import portalCollection from \'@shopgate/pwa-common/helpers/portals/portalCollection\';',
+      exportsStart: 'portalCollection.registerPortals({',
+      exportsEnd: '});',
     },
     logStart: '  Indexing portals ...',
     logNotFound: '  No extensions found for \'portals\'',
