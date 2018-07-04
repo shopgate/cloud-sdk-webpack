@@ -19,6 +19,7 @@ export default [
       /worker\.js$/,
       resolve(process.env.SDK_PATH),
       resolve(process.env.SDK_PATH, 'bin'),
+      /node_modules\b(?!\/@shopgate)\b.*/,
     ],
     use: [
       stringReplacementLoader,
