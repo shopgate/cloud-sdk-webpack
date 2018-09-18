@@ -36,6 +36,11 @@ class WebpackProcess {
 
       createIndexes()
         .then(() => {
+          if (process.env.indexOnly === 'true') {
+            process.exit(0);
+            return;
+          }
+
           logger.log('');
 
           this.configurator

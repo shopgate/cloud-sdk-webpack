@@ -10,6 +10,7 @@ const { ENV_KEY_PRODUCTION } = require('../lib/environment');
 if (argv.theme) {
   process.env.theme = argv.theme;
   process.env.publicPath = argv.publicPath;
+  process.env.indexOnly = argv.indexOnly || false;
 }
 
 // Set the environment to production.
