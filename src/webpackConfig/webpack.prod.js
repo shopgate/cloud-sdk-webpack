@@ -25,7 +25,7 @@ export default merge(common, {
     },
     rules: loaders,
   },
-  devtool: false,
+  devtool: process.env.SOURCE_MAPS || false,
   output: {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
