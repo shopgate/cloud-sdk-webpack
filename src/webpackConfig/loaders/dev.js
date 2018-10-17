@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { resolve } from 'path';
+import { resolve, sep } from 'path';
 import { NODE_MODULES } from '../variables';
 import themes from '../../Themes';
 import common from './common';
@@ -19,7 +19,7 @@ export default [
       /worker\.js$/,
       resolve(process.env.SDK_PATH),
       resolve(process.env.SDK_PATH, 'bin'),
-      /node_modules\b(?!\/@shopgate)\b.*/,
+      new RegExp(`node_modules\\b(?!\\${sep}@shopgate)\\b.*`),
     ],
     use: [
       stringReplacementLoader,
