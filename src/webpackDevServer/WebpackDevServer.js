@@ -8,10 +8,12 @@
 import webpack from 'webpack';
 import WpDevServer from 'webpack-dev-server';
 import merge from 'webpack-merge';
+import fs from 'fs';
 import WebpackConfigurator from 'Src/webpackConfig/WebpackConfigurator';
 import createIndexes from 'Src/webpackConfig/helpers/indexes';
 import themes from 'Src/Themes';
 import logger, { logHelper } from 'Src/logger';
+import { DEFAULT_CONFIG_PATH } from 'Src/webpackConfig/helpers/constants';
 
 /**
  * The WebpackDevServer class.
@@ -29,46 +31,62 @@ class WebpackDevServer {
   }
 
   /**
-   * Starts the webpack dev server instance.
+   * Starts the webpack processes.
    */
   start() {
     themes.init(() => {
       logger.log('');
 
       createIndexes()
-        .then(() => {
-          logger.log('');
+        .then(this.startDevServer)
+        .catch(this.handleIndexerErrors);
+    });
+  }
 
-          this.configurator
-            .setConfigPath(themes.getConfig())
-            .loadThemeConfig();
+  /**
+   * Starts the actual webpack dev server.
+   */
+  startDevServer = () => {
+    logger.log('');
 
-          logHelper.logLogoStart();
+    this.configurator
+      .setConfigPath(themes.getConfig())
+      .loadThemeConfig();
 
-          this.webpackConfig = this.configurator.getConfig();
-          this.serverConfig = this.configurator.getServerConfig();
+    logHelper.logLogoStart();
 
-          /**
+    this.webpackConfig = this.configurator.getConfig();
+    this.serverConfig = this.configurator.getServerConfig();
+
+    /**
            * At this point we need to merge the modules resolving paths with our default
            * webpack config. This is because if it is not included in a custom webpack config
            * then the modules will not be resolved from the correct places.
            */
-          this.injectModuleResolves();
+    this.injectModuleResolves();
 
-          WpDevServer.addDevServerEntrypoints(this.webpackConfig, this.serverConfig);
+    WpDevServer.addDevServerEntrypoints(this.webpackConfig, this.serverConfig);
 
-          this.compiler = webpack(this.webpackConfig);
-          this.server = new WpDevServer(this.compiler, this.serverConfig);
+    this.compiler = webpack(this.webpackConfig);
+    this.server = new WpDevServer(this.compiler, this.serverConfig);
 
-          const { host, port } = this.serverConfig;
+    const { host, port } = this.serverConfig;
 
-          this.server.listen(port, host);
-        })
-        .catch((error) => {
-          logger.log(error);
-          process.exit(1);
-        });
+    this.server.listen(port, host);
+
+    // Set up a watcher for the config files.
+    fs.watch(`${themes.getPath()}${DEFAULT_CONFIG_PATH}`, () => {
+      createIndexes().catch(this.handleIndexerErrors);
     });
+  }
+
+  /**
+   * Handles any error that occurs in the indexer.
+   * @param {string|Object} error The error from the indexer.
+   */
+  handleIndexerErrors = (error) => {
+    logger.log(error);
+    process.exit(1);
   }
 
   /**
