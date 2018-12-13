@@ -7,6 +7,7 @@
 
 import { existsSync } from 'fs';
 import requireUncached from 'require-uncached';
+import { DEFAULT_CONFIG_PATH } from './constants';
 import themes from '../../Themes';
 
 /**
@@ -19,7 +20,7 @@ const getComponentsSettings = () => {
     const themeWidgets = `${themePath}/widgets`;
     const themeConfig = `${themeWidgets}/widgets.json`;
 
-    const defaultConfig = requireUncached(`${themePath}/config/components.json`);
+    const defaultConfig = requireUncached(`${themePath}${DEFAULT_CONFIG_PATH}`);
 
     const configExists = (existsSync(themeWidgets) && existsSync(themeConfig));
     const config = configExists ? requireUncached(themeConfig) : {};
