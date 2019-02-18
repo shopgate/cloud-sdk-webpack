@@ -9,6 +9,9 @@ import chalk from 'chalk';
 import { logHelper } from 'Src/logger';
 import convertLanguageToISO from './convertLanguageToISO';
 import { DEFAULT_LANGUAGE } from '../variables';
+import i18n from '../../i18n';
+
+const t = i18n(__filename);
 
 /**
  * Determines a language for a theme. It considers the language files which are located within
@@ -43,7 +46,7 @@ const getThemeLanguage = (availableLanguages, locale) => {
 
   logHelper
     .logger
-    .log(`  Theme file language set to ${chalk.bold.green(language)} (locale ${chalk.bold.blue(needle)})`);
+    .log(`  ${t('THEME_LANGUAGE_SET_TO', { fileLocale: chalk.bold.green(language), guruLocale: chalk.bold.blue(needle) })}`);
 
   return language;
 };

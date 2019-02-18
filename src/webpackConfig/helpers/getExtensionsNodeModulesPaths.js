@@ -9,13 +9,16 @@ import { existsSync } from 'fs';
 import { resolve } from 'path';
 import { EXTENSIONS_PATH } from '../variables';
 import logger from '../../logger';
+import i18n from '../../i18n';
+
+const t = i18n(__filename);
 
 let extensions = {};
 
 try {
   extensions = JSON.parse(process.env.extensions);
 } catch (error) {
-  logger.log('No extension ins process specified!');
+  logger.log(t('NO_EXTENSIONS_ATTACHED'));
 }
 
 /**

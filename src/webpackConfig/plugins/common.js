@@ -21,6 +21,9 @@ import getComponentsSettings from '../helpers/getComponentsSettings';
 import getDevConfig from '../helpers/getDevConfig';
 import getThemeConfig from '../helpers/getThemeConfig';
 import { ENV_KEY_PRODUCTION, ENV, isStaging, isDev, isProd } from '../../environment';
+import i18n from '../../i18n';
+
+const t = i18n(__filename);
 
 const appConfig = getAppSettings();
 const componentsConfig = getComponentsSettings();
@@ -90,7 +93,12 @@ const plugins = [
   new webpack.optimize.ModuleConcatenationPlugin(),
   new webpack.HashedModuleIdsPlugin(),
   new ProgressBarWebpackPlugin({
-    format: `  building [${blue(':bar')}] [:msg] ${green(':percent')} (:elapsed seconds)`,
+    format: `  ${t('WEBPACK_PROGRESS', {
+      bar: blue(':bar'),
+      message: ':msg',
+      percent: green(':percent'),
+      elapsed: ':elapsed',
+    })}`,
     clear: false,
   }),
 ];

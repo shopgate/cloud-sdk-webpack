@@ -17,9 +17,12 @@ import themes from 'Src/Themes';
 import logger from 'Src/logger';
 import { EXTENSIONS_PATH } from '../variables';
 import getComponentsSettings from './getComponentsSettings';
+import i18n from '../../i18n';
+
+const t = i18n(__filename);
 
 const TYPE_WIDGETS = 'WIDGETS';
-const TYPE_TRACKING = 'TRACKING';
+const TYPE_TRACKERS = 'TRACKERS';
 const TYPE_PORTALS = 'PORTALS';
 const TYPE_REDUCERS = 'REDUCERS';
 const TYPE_SUBSCRIBERS = 'SUBSCRIBERS';
@@ -73,7 +76,7 @@ const readConfig = options => new Promise((resolve, reject) => {
   } = options;
 
   if (!config || !isPlainObject(config)) {
-    return reject(new TypeError(`The supplied component config is not an object! Received '${typeof config}'`));
+    return reject(new TypeError(t('SUPPLIED_CONFIG_IS_NOT_AN_OBJECT', { typeofConfig: typeof config })));
   }
 
   const imports = importsStart ? [importsStart] : []; // Holds the import strings.
@@ -134,8 +137,23 @@ const readConfig = options => new Promise((resolve, reject) => {
 });
 
 /**
+ * Creates translations for the extension indexing log.
+ * @param {string} type The indexed type.
+ * @returns {Object}
+ */
+const getIndexLogTranslations = (type = TYPE_WIDGETS) => {
+  const params = { type: t(`TYPE_${type}`) };
+
+  return {
+    logStart: `  ${t('INDEXING_TYPE', params)}`,
+    logEnd: `  ${t('INDEXED_TYPE', params)}`,
+    logNotFound: `  ${t('NO_EXTENSIONS_FOUND_FOR_TYPE', params)}`,
+  };
+};
+
+/**
  * Validates the extensions input.
- * @param {Object} input The inout.
+ * @param {Object} input The input.
  * @return {Promise}
  */
 const validateExtensions = input => new Promise((resolve, reject) => {
@@ -152,7 +170,7 @@ const validateExtensions = input => new Promise((resolve, reject) => {
 
     return resolve(input);
   } catch (e) {
-    return reject(new Error('Extension could not be validated!'));
+    return reject(new Error(t('EXTENSION_COULD_NOT_BE_VALIDATED')));
   }
 });
 
@@ -173,7 +191,7 @@ const createStrings = input => new Promise((resolve, reject) => {
 
     return resolve(indexString.length ? indexString : null);
   } catch (e) {
-    return reject(new Error('Strings could not be created!'));
+    return reject(new Error(t('STRINGS_COULD_NOT_BE_CREATED')));
   }
 });
 
@@ -216,9 +234,9 @@ const index = (options) => {
   const {
     file,
     config,
-    logStart = '  Indexing ...',
-    logNotFound = '  No extensions found!',
-    logEnd = '  ... widgets indexed.',
+    logStart,
+    logNotFound,
+    logEnd,
     defaultContent = defaultFileContent,
   } = options;
 
@@ -249,9 +267,7 @@ const indexWidgets = () => {
       type: TYPE_WIDGETS,
       config: widgets,
     },
-    logStart: '  Indexing widgets ...',
-    logNotFound: '  No extensions found for \'widgets\'',
-    logEnd: ' ... widgets indexed.',
+    ...getIndexLogTranslations(TYPE_WIDGETS),
   });
 };
 
@@ -265,12 +281,10 @@ const indexTracking = () => {
   return index({
     file: 'tracking.js',
     config: {
-      type: TYPE_TRACKING,
+      type: TYPE_TRACKERS,
       config: tracking,
     },
-    logStart: '  Indexing trackers ...',
-    logNotFound: '  No extensions found for \'tracking\'',
-    logEnd: ' ... trackers indexed.',
+    ...getIndexLogTranslations(TYPE_TRACKERS),
   });
 };
 
@@ -290,9 +304,7 @@ const indexPortals = () => {
       exportsStart: 'portalCollection.registerPortals({',
       exportsEnd: '});',
     },
-    logStart: '  Indexing portals ...',
-    logNotFound: '  No extensions found for \'portals\'',
-    logEnd: ' ... portals indexed.',
+    ...getIndexLogTranslations(TYPE_PORTALS),
   });
 };
 
@@ -309,10 +321,8 @@ const indexReducers = () => {
       type: TYPE_REDUCERS,
       config: reducers,
     },
-    logStart: '  Indexing reducers ...',
-    logNotFound: '  No extensions found for \'reducers\'',
-    logEnd: ' ... reducers indexed.',
     defaultContent: 'export default null;\n',
+    ...getIndexLogTranslations(TYPE_REDUCERS),
   });
 };
 
@@ -332,10 +342,8 @@ const indexSubscribers = () => {
       exportsEnd: '];',
       isArray: true,
     },
-    logStart: '  Indexing subscribers ...',
-    logNotFound: '  No extensions found for \'subscribers\'',
-    logEnd: ' ... subscribers indexed.',
     defaultContent: 'export default [];\n',
+    ...getIndexLogTranslations(TYPE_SUBSCRIBERS),
   });
 };
 
@@ -352,10 +360,8 @@ const indexTranslations = () => {
       type: TYPE_TRANSLATIONS,
       config: translations,
     },
-    logStart: '  Indexing translations ...',
-    logNotFound: '  No extensions found for \'translations\'',
-    logEnd: ' ... translations indexed.',
     defaultContent: 'export default null;\n',
+    ...getIndexLogTranslations(TYPE_TRANSLATIONS),
   });
 };
 

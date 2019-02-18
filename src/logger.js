@@ -6,6 +6,9 @@
  */
 
 import { green, blue, bold } from 'chalk';
+import i18n from './i18n';
+
+const t = i18n(__filename);
 
 /**
  * The Logger class hold static functions for logging useful information when running
@@ -51,7 +54,7 @@ class LogHelper {
    * Logs the webpack startup.
    */
   logLogoStart() {
-    this.logger.log(`  Starting ${bold('Webpack Development Server')} ...\n`);
+    this.logger.log(`  ${t('BUILD_STARTING', { server: bold(t('SERVER')) })}\n`);
   }
 
   /**
@@ -67,7 +70,7 @@ class LogHelper {
    * Logs if the build has successfully finished.
    */
   logBuildFinished() {
-    this.logger.log(`  ${green('SUCCESS')}: Your project has been built successfully.\n`);
+    this.logger.log(`  ${t('BUILD_FINISHED', { prefix: green(t('PREFIX')) })}\n`);
     this.logger.log(this.getDivider());
   }
 }
