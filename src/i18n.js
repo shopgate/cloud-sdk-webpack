@@ -52,7 +52,7 @@ module.exports = (modulePath) => {
     i18n = new I18n('en');
   }
 
-  const moduleNamespace = path.relative(rootDirectory, modulePath).replace(/(^[lib|src]+\/)|(\.js$)/ig, '');
+  const moduleNamespace = path.relative(rootDirectory, modulePath).replace(/(^(lib|src)+\/)|(\.js$)/ig, '');
 
   return (key, data) => {
     const keyPath = [moduleNamespace];
