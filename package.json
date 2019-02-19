@@ -73,6 +73,7 @@
     "babel-polyfill": "^6.26.0",
     "bluebird": "^3.5.1",
     "cache-loader": "^1.2.2",
+    "case-sensitive-paths-webpack-plugin": "^2.1.2",
     "chalk": "^2.4.1",
     "color": "^2.0.1",
     "compression-webpack-plugin": "^1.1.11",

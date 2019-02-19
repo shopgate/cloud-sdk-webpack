@@ -7,6 +7,7 @@
 
 import webpack from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import commonPlugins from './common';
 
 export default [
@@ -14,4 +15,5 @@ export default [
   ...(process.env.analyze === 'true') && [new BundleAnalyzerPlugin()],
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoEmitOnErrorsPlugin(),
+  new CaseSensitivePathsPlugin(),
 ];
