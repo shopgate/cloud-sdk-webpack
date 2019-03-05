@@ -35,7 +35,7 @@ export default nodeModules => [
   {
     test: /\.ejs$/,
     use: [
-      resolve(nodeModules, 'ejs-loader'),
+      resolve(__dirname, './ejsLoader'),
     ],
   },
   {

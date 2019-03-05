@@ -46,6 +46,7 @@ const getThemeLanguage = (availableLanguages, locale) => {
 
   logHelper
     .logger
+    // eslint-disable-next-line extra-rules/no-single-line-objects
     .log(`  ${t('THEME_LANGUAGE_SET_TO', { fileLocale: chalk.bold.green(language), guruLocale: chalk.bold.blue(needle) })}`);
 
   return language;

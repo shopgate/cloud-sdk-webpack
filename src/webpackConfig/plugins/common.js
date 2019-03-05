@@ -20,7 +20,7 @@ import getAppSettings from '../helpers/getAppSettings';
 import getComponentsSettings from '../helpers/getComponentsSettings';
 import getDevConfig from '../helpers/getDevConfig';
 import getThemeConfig from '../helpers/getThemeConfig';
-import { ENV_KEY_PRODUCTION, ENV, isStaging, isDev, isProd } from '../../environment';
+import { ENV_KEY_PRODUCTION, ENV, isStaging, isDev } from '../../environment';
 import i18n from '../../i18n';
 
 const t = i18n(__filename);
@@ -48,18 +48,6 @@ const plugins = [
       IP: JSON.stringify(ip),
       PORT: JSON.stringify(apiPort),
     },
-  }),
-  new webpack.optimize.CommonsChunkPlugin({
-    minChunks: (module, count) => (
-      (module.resource && module.resource.indexOf('lodash') !== -1) ||
-      (module.resource && module.resource.indexOf('gsap') !== -1) ||
-      (module.resource && module.resource.indexOf('hammerjs') !== -1) ||
-      (module.resource && module.resource.indexOf('swiper') !== -1) ||
-      (module.resource && module.resource.indexOf('rxjs') !== -1) ||
-      count >= 2
-    ),
-    name: 'common',
-    filename: isProd ? '[name].[chunkhash].js' : '[name].js',
   }),
   new StringReplacePlugin(),
   new HTMLWebpackPlugin({
@@ -89,7 +77,6 @@ const plugins = [
       },
     },
   }),
-  new webpack.IgnorePlugin(),
   new webpack.optimize.ModuleConcatenationPlugin(),
   new webpack.HashedModuleIdsPlugin(),
   new ProgressBarWebpackPlugin({

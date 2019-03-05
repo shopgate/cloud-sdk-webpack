@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* global navigator, window */
 
 if ('serviceWorker' in navigator) {
@@ -9,3 +10,4 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
+/* eslint-enable no-console */

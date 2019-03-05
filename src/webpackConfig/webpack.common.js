@@ -6,6 +6,7 @@
  */
 
 import { resolve } from 'path';
+import TerserPlugin from 'terser-webpack-plugin';
 import { EXTENSIONS_PATH, NODE_MODULES } from './variables';
 import convertLanguageToISO from './helpers/convertLanguageToISO';
 import getAppSettings from './helpers/getAppSettings';
@@ -65,5 +66,48 @@ export default {
   target: 'web',
   watchOptions: {
     ignored: /node_modules\b(?!\/@shopgate)\b.*/,
+  },
+  optimization: {
+    usedExports: true,
+    sideEffects: true,
+    namedModules: true,
+    namedChunks: true,
+    nodeEnv: process.env.NODE_ENV,
+    removeAvailableModules: true,
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /node_modules/,
+          name: 'common',
+          chunks: 'all',
+          minChunks: 2,
+        },
+      },
+    },
+    minimizer: [
+      new TerserPlugin({
+        parallel: false,
+        extractComments: false,
+        terserOptions: {
+          ecma: 5,
+          keep_fnames: false,
+          mangle: true,
+          sourceMap: false,
+          safari10: false,
+          toplevel: false,
+          warnings: false,
+          output: {
+            comments: false,
+          },
+          parse: {
+            shebang: false,
+          },
+          compress: {
+            passes: 3,
+            keep_fargs: false,
+          },
+        },
+      }),
+    ],
   },
 };
