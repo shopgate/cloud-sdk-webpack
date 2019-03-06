@@ -1,10 +1,7 @@
 #!/usr/bin/env node
 
-'use strict';
-
 const { argv } = require('yargs');
-const { resolve } = require('path');
-const { ENV_KEY_PRODUCTION } = require('../lib/environment');
+const { ENV_KEY_PRODUCTION } = require('../lib/variables');
 
 // Set the theme key.
 if (argv.theme) {

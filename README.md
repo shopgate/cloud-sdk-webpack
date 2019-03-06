@@ -1,4 +1,4 @@
-# Shopgate Cloud SDK Webpack Compiler
+# Shopgate Connect SDK Webpack Compiler
 
 [![Travis CI Build](https://travis-ci.org/shopgate/cloud-sdk-webpack.svg?branch=master)](https://travis-ci.org/shopgate/cloud-sdk-webpack)
 [![GitHub release](https://img.shields.io/github/release/shopgate/cloud-sdk-webpack.svg)]()
@@ -21,6 +21,6 @@ apps and mobile websites for the iPhone, iPad, Android smartphones and tablets.
 
 ## License
 
-Shopgate's Cloud SDK Webpack compiler is available under the Apache License, Version 2.0.
+The Shopgates Connect SDK Webpack Compiler is available under the Apache License, Version 2.0.
 
 See the [LICENSE](./LICENSE) file for more information.

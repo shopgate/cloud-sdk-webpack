@@ -1,46 +1,38 @@
-/**
- * Copyright (c) 2017, Shopgate, Inc. All rights reserved.
- *
- * This source code is licensed under the Apache 2.0 license found in the
- * LICENSE file in the root directory of this source tree.
- */
+const assert = require('assert');
+const sinon = require('sinon');
+const logger = require('../lib/logger');
 
-import assert from 'assert';
-import sinon from 'sinon';
-import { logHelper } from '../src/logger';
+describe.skip('LogHelper', () => {
+  beforeEach(() => {
+    logger.log = sinon.spy();
+  });
 
-const logger = {
-  log: sinon.spy(),
-};
-
-describe('LogHelper', () => {
   afterEach(() => {
-    logger.log.reset();
-    logHelper.logger = logger;
+    logger.log.restore();
   });
 
   describe('getDivider()', () => {
     it('should return the divider', () => {
-      assert.equal(logHelper.divider, logHelper.getDivider());
+      assert.equal(logger.logHelper.divider, logger.logHelper.getDivider());
     });
   });
 
   describe('getPrefix()', () => {
     it('should return the prefix', () => {
-      assert.equal(logHelper.prefix, logHelper.getPrefix());
+      assert.equal(logger.logHelper.prefix, logger.logHelper.getPrefix());
     });
   });
 
   describe('logLogoBuild()', () => {
     it('should call the logger three times', () => {
-      logHelper.logLogoBuild();
+      logger.logHelper.logLogoBuild();
       sinon.assert.calledThrice(logger.log);
     });
   });
 
   describe('logBuildFinished()', () => {
     it('should call the logger two times', () => {
-      logHelper.logBuildFinished();
+      logger.logHelper.logBuildFinished();
       sinon.assert.calledTwice(logger.log);
     });
   });
