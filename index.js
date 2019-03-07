@@ -7,5 +7,5 @@
 
 setTimeout(() => {
   // eslint-disable-next-line global-require
-  require('./lib/webpackDevServer/WebpackDevServer').default.start();
+  require('./lib/webpackDevServer/WebpackDevServer').start();
 }, 400);

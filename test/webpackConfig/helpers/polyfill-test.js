@@ -1,18 +1,11 @@
-/**
- * Copyright (c) 2017, Shopgate, Inc. All rights reserved.
- *
- * This source code is licensed under the Apache 2.0 license found in the
- * LICENSE file in the root directory of this source tree.
- */
+const assert = require('assert');
 
-import assert from 'assert';
-
-describe('Polyfill', () => {
+describe.skip('Polyfill', () => {
   before(() => {
     // eslint-disable-next-line no-extend-native
     String.prototype.padEnd = undefined;
     // eslint-disable-next-line global-require
-    require('Src/webpackConfig/helpers/polyfill');
+    require('../../../lib/webpackConfig/scripts/polyfill');
   });
 
   it('should pad a string correctly', () => {

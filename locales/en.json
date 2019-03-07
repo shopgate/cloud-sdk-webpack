@@ -1,11 +1,11 @@
 {
-  "webpackConfig/helpers/getExtensionsNodeModulesPaths": {
+  "helpers/getExtensionsNodeModulesPaths": {
     "NO_EXTENSIONS_ATTACHED": "No extensions attached"
   },
-  "webpackConfig/helpers/getThemeLanguage": {
+  "helpers/getThemeLanguage": {
     "THEME_LANGUAGE_SET_TO": "Theme file language set to {fileLocale} (locale {guruLocale})"
   },
-  "webpackConfig/helpers/indexes": {
+  "helpers/indexes": {
     "SUPPLIED_CONFIG_IS_NOT_AN_OBJECT": "The supplied component config is not an object. Received {typeofConfig}",
     "EXTENSION_COULD_NOT_BE_VALIDATED": "Extension could not be validated",
     "STRINGS_COULD_NOT_BE_CREATED": "Strings could not be created",
@@ -19,7 +19,7 @@
     "TYPE_TRANSLATIONS": "translations",
     "TYPE_WIDGETS": "widgets"
   },
-  "webpackConfig/plugins/common": {
+  "webpack.config": {
     "WEBPACK_PROGRESS": "building [{bar}] [{message}] {percent} ({elapsed} seconds)"
   },
   "logger": {
