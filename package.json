@@ -42,7 +42,6 @@
   },
   "devDependencies": {
     "@shopgate/eslint-config": "^6.2.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.4.0",
     "coveralls": "^3.0.1",
     "eslint": "^4.19.1",
     "jsdom": "^11.3.0",
@@ -58,6 +57,7 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-polyfill": "^6.26.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.4.0",
     "bluebird": "^3.5.1",
     "cache-loader": "^2.0.1",
     "chalk": "^2.4.1",
