@@ -36,7 +36,7 @@
     "production": "node ./bin/sgcloud-webpack",
     "preversion": "npm test",
     "version": "git add -A",
-    "postversion": "git push && git push --tags && if [ \"$PRERELEASE_TAG\" = \"\" ]; then npm publish --access public; else npm publish --tag $PRERELEASE_TAG --access public; fi"
+    "postversion": "git push && git push --tags && if [ \"$BETA\" = \"\" ]; then npm publish --access public; else npm publish --tag beta --access public; fi"
   },
   "lint-staged": {
     "*.js": "eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js ."
