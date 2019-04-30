@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const { argv } = require('yargs');
-const { ENV_KEY_PRODUCTION } = require('../lib/variables');
+const { ENV_KEY_PRODUCTION, ENV_KEY_DEVELOPMENT } = require('../lib/variables');
 
 // Set the theme key.
 if (argv.theme) {
@@ -10,7 +10,9 @@ if (argv.theme) {
   process.env.indexOnly = argv.indexOnly || false;
 }
 
-// Set the environment to production.
-process.env.NODE_ENV = ENV_KEY_PRODUCTION;
+// Set the environment to production when not already set to development.
+if (process.env.NODE_ENV !== ENV_KEY_DEVELOPMENT) {
+  process.env.NODE_ENV = ENV_KEY_PRODUCTION;
+}
 
 require('../lib/build.js');
