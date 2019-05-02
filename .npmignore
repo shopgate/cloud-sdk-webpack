@@ -1,6 +1,9 @@
 build/
 test/
 src/
+.git/
+.vscode/
+.idea/
 .nyc_output/
 .editorconfig
 .eslintignore
