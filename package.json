@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/cloud-sdk-webpack",
-  "version": "1.19.4",
+  "version": "1.19.5",
   "description": "Shopgate's Webpack compiler",
   "license": "Apache-2.0",
   "repository": {
@@ -20,7 +20,8 @@
   ],
   "contributors": [
     "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)",
-    "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)"
+    "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)",
+    "Waldemar Rutkowski <waldemar.rutkowski+github@shopgate.com> (https://github.com/SG-Noxoreos)"
   ],
   "main": "index.js",
   "bin": {
@@ -35,7 +36,7 @@
     "production": "node ./bin/sgcloud-webpack",
     "preversion": "npm test",
     "version": "git add -A",
-    "postversion": "git push && git push --tags && npm publish --access public"
+    "postversion": "git push && git push --tags && if [ \"$BETA\" != true ]; then npm publish --access public; else npm publish --tag beta --access public; fi"
   },
   "lint-staged": {
     "*.js": "eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js ."
@@ -63,7 +64,7 @@
     "chalk": "^2.4.1",
     "color": "^3.1.0",
     "compression-webpack-plugin": "^2.0.0",
-    "css-loader": "^2.1.1",
+    "css-loader": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
     "import-fresh": "^3.0.0",
     "intl": "^1.2.5",
