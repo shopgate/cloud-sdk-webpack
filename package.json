@@ -71,7 +71,7 @@
     "intl": "^1.2.5",
     "json-loader": "^0.5.7",
     "loader-utils": "^1.2.3",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.14",
     "messageformat": "^2.0.5",
     "progress-bar-webpack-plugin": "^1.11.0",
     "script-ext-html-webpack-plugin": "^2.0.1",
