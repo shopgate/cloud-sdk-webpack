@@ -72,7 +72,6 @@
     "json-loader": "^0.5.7",
     "loader-utils": "^1.2.3",
     "lodash": "^4.17.14",
-    "lodash.template": "^4.5.0",
     "messageformat": "^2.0.5",
     "progress-bar-webpack-plugin": "^1.11.0",
     "script-ext-html-webpack-plugin": "^2.0.1",
@@ -84,7 +83,7 @@
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-dev-server": "^3.1.8",
     "webpack-merge": "^4.1.2",
-    "workbox-webpack-plugin": "^3.2.0",
+    "workbox-webpack-plugin": "^4.3.1",
     "yargs": "^13.2.1"
   },
   "engines": {
