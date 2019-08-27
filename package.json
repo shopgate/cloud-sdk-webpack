@@ -55,12 +55,10 @@
     "sinon": "^4.5.0"
   },
   "dependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.4",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.4.0",
-    "babel-polyfill": "^6.26.0",
+    "@babel/core": "^7.5.5",
+    "babel-loader": "^8.0.6",
     "bluebird": "^3.5.1",
-    "cache-loader": "^2.0.1",
+    "cache-loader": "^4.1.0",
     "chalk": "^2.4.1",
     "color": "^3.1.0",
     "compression-webpack-plugin": "^2.0.0",
@@ -79,9 +77,10 @@
     "style-loader": "^0.23.1",
     "svg-inline-loader": "^0.8.0",
     "terser-webpack-plugin": "^1.2.3",
-    "webpack": "^4.29.6",
+    "webpack": "^4.39.1",
     "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-dev-server": "^3.1.8",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2",
     "webpack-merge": "^4.1.2",
     "workbox-webpack-plugin": "^4.3.1",
     "yargs": "^13.2.1"
