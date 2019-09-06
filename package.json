@@ -68,6 +68,7 @@
     "color": "^3.1.0",
     "compression-webpack-plugin": "^2.0.0",
     "css-loader": "^1.0.0",
+    "find-cache-dir": "^1.0.0",
     "fs-extra": "^4.0.2",
     "html-webpack-plugin": "^3.2.0",
     "import-fresh": "^3.0.0",
