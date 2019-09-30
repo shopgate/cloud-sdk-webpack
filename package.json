@@ -21,7 +21,8 @@
   "contributors": [
     "Florian Müller <florian.mueller81@gmx.de> (https://github.com/devbucket)",
     "Richard Gorman <richardgorman@outlook.com> (https://github.com/richardgorman)",
-    "Waldemar Rutkowski <waldemar.rutkowski+github@shopgate.com> (https://github.com/SG-Noxoreos)"
+    "Waldemar Rutkowski <waldemar.rutkowski+github@shopgate.com> (https://github.com/SG-Noxoreos)",
+    "Oleksandr Bilenko <oleksandr.bilenko@shopgate.com> (https://github.com/alexbridge)"
   ],
   "main": "index.js",
   "bin": {
