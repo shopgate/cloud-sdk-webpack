@@ -37,7 +37,9 @@
     "production": "node ./bin/sgcloud-webpack",
     "preversion": "npm test",
     "version": "git add -A",
-    "postversion": "git push && git push --tags && if [ \"$BETA\" != true ]; then npm publish --access public; else npm publish --tag beta --access public; fi"
+    "postversion": "git push && git push --tags && if [ \"$BETA\" != true ]; then npm publish --access public; else npm publish --tag beta --access public; fi",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "lint-staged": {
     "*.js": "eslint --ignore-path .gitignore --ignore-path .eslintignore  --ext .js ."
@@ -92,7 +94,8 @@
     "webpack-dev-server": "3.7.2",
     "webpack-merge": "4.2.1",
     "workbox-webpack-plugin": "4.3.1",
-    "yargs": "13.2.1"
+    "yargs": "13.2.1",
+    "snyk": "^1.316.1"
   },
   "engines": {
     "node": ">= 8.0.0",
@@ -115,5 +118,6 @@
     ],
     "all": true,
     "report-dir": "build"
-  }
+  },
+  "snyk": true
 }
