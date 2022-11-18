@@ -75,7 +75,7 @@
     "import-fresh": "3.0.0",
     "intl": "1.2.5",
     "json-loader": "0.5.7",
-    "loader-utils": "1.2.3",
+    "loader-utils": "1.4.2",
     "lodash": "4.17.14",
     "messageformat": "2.0.5",
     "progress-bar-webpack-plugin": "1.12.1",
